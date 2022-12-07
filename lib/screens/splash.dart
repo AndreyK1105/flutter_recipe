@@ -14,7 +14,7 @@ class Splash extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Route route=_createRoute() ;
-Future.delayed(Duration(milliseconds: 3000), () {
+Future.delayed(const Duration(milliseconds: 3000), () {
  Navigator.of(context).push(route);
 });
 
@@ -29,10 +29,8 @@ Future.delayed(Duration(milliseconds: 3000), () {
             //print(image?.height);
 
             return Scaffold(
-                // appBar: AppBar(
-                //   title: const Text('title'),
-                // ),   
-                  floatingActionButton: FloatingActionButton(onPressed: () => Navigator.of(context).push(_createRoute()),), 
+                
+                  
                 body: Container(
                  width: double.infinity, 
                   height: double.infinity,
@@ -138,7 +136,7 @@ Future.delayed(Duration(milliseconds: 3000), () {
 Route _createRoute() {
   return PageRouteBuilder(
     pageBuilder: (context, animation, secondaryAnimation) => const ListRecipe(),
-    transitionDuration: Duration(milliseconds : 4000),
+    transitionDuration: const Duration(milliseconds : 4000),
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
       const begin = Offset(0.0, 1.0);
       const end = Offset.zero;
