@@ -5,7 +5,7 @@ class Recipe {
   List <Ingredient> ingredients=[];
   List<Cook> cook=[];
   Recipe({required this.name, required this.img, required this.time, 
-  required this.ingredients, required this.cook}){}
+  required this.ingredients, required this.cook});
 }
 
 class Ingredient {
@@ -18,5 +18,5 @@ Ingredient({required this.ingredient, required this.volume});
 class Cook {
   String step='';
   String timeStep='';
-  Cook({required this.step, required this.timeStep}){}
+  Cook({required this.step, required this.timeStep});
 }

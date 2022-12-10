@@ -110,24 +110,7 @@ List cookStepTime=[cookStepTimeLosos, cookStepTimePoke, cookStepTimeSteik, cookS
            padding: const EdgeInsets.fromLTRB(16.0, 0, 16, 0),
            child: ListTileCastom(index: index, title: recipes[index].name, subtitle: recipes[index].time, img: recipes[index].img),
          );
-        //  Padding(
-        //    padding: const EdgeInsets.all(6.0),
-        //    child: Container (
-        //     decoration: BoxDecoration(
-        //       border:Border.all(width: 1, color: Colors.white ),
-        //       borderRadius: BorderRadius.circular(5)),
-        //      child: ListTile(
-        //       title: Text(recipes[index].name),
-        //       subtitle: Row (children: [
-        //         Icon(Icons.access_time , size: 20,),
-        //         Text(recipes[index].time),
-        //       ]),
-        //       leading: Image.asset(recipes[index].img),
-        //      // contentPadding: EdgeInsets.all(15) ,
-        //       tileColor: Color(0xFFFCFDFD),
-        //       ),
-        //    ),
-        //  );
+       
          }),
   
     );
