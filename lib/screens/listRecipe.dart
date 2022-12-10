@@ -65,14 +65,18 @@ List cookStepsPizza=['В Тесто для пиццы раскатываем т�
 'Кладем сыр, помидоры и базилик на основу, ставим в духовку еще на 10 минут. Пицца готова, когда сыр расплавится. '];
 List cookStepTimePizza=['01:00', '01:00', '01:00', '10:00', '01:00', '01:00', '10:00'];
 
+List <Recipe> recipes=[];
 
-  Widget build(BuildContext context) {
+
+@override
+  void initState() {
+    // TODO: implement initState
 
 List  ingr =[ingredientsLosos, ingrPoke, ingrSteik, ingrTost, ingrPasta, ingrBurger, ingredientsPizza];
 List ingrVol  =[ingrVolumeLosos, ingrVolPoke, ingrVolSteik, ingrVolTost, ingrVolPasta, ingrVolBurger, ingrVolumePizza];
 List cookStep= [cookStepsLosos, cookStepsPoke, cookStepsSteik, cookStepsTost, cookStepsPasta, cookStepsBurger, cookStepsPizza];
 List cookStepTime=[cookStepTimeLosos, cookStepTimePoke, cookStepTimeSteik, cookStepTimeTost, cookStepTimePasta, cookStepTimeBurger, cookStepTimePizza];
-     List <Recipe> recipes=[];
+     
      List<ListTile> tile =[];
      for (int i=0; i<name.length; i++){
       List <Ingredient>ingredients=[];  
@@ -93,6 +97,13 @@ List cookStepTime=[cookStepTimeLosos, cookStepTimePoke, cookStepTimeSteik, cookS
 
 
      } 
+
+
+    super.initState();
+  }
+  Widget build(BuildContext context) {
+
+
 
      
 
