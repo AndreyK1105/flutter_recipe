@@ -15,6 +15,7 @@ class Splash extends StatelessWidget {
   Widget build(BuildContext context) {
     Route route=_createRoute() ;
 Future.delayed(const Duration(milliseconds: 3000), () {
+
  Navigator.of(context).push(route);
 });
 
@@ -31,7 +32,9 @@ Future.delayed(const Duration(milliseconds: 3000), () {
             return Scaffold(
                 
                   
-                body: Container(
+                body: 
+                
+                Container(
                  width: double.infinity, 
                   height: double.infinity,
 
@@ -47,72 +50,74 @@ Future.delayed(const Duration(milliseconds: 3000), () {
                     FittedBox (
                       child: Padding(
 
-                        padding: const EdgeInsets.symmetric(horizontal: 50),
-                        child: ShaderMask(
-                          blendMode: BlendMode.srcIn,
-                          shaderCallback: (Rect bounds) {
-                            return ImageShader(
-                              image!,
-                              TileMode.decal,
-                              TileMode.decal,
-                              Matrix4.identity().storage,
-                            );
-                            //  RadialGradient(
-                            //   center: Alignment.center,
-                            //   radius: 0.5,
-                            //   colors: <Color>[Colors.yellow, Colors.deepOrange.shade900],
-                            //   tileMode: TileMode.mirror,
-                            // ).createShader(bounds);
-                          },
-                          child: 
-                        
-                               const SizedBox(width: 200,
-                                 child: Padding(
-                                   padding: EdgeInsets.only(top: 20),
-                                   child: Text(
-                                    'OTUS FOOD',
-                                
-                                    strutStyle: StrutStyle( fontFamily: 'Roboto',
-                                    fontSize: 80,
-                                      height: 0.7,
+                        padding: const EdgeInsets.all(80),
+                        child: 
+                          SizedBox(width: 250, height: 250,
+                            child: Text('OTUS FOOD', 
+                               maxLines: 2,
+
+                               strutStyle: StrutStyle( fontFamily: 'Roboto',
+                                    fontSize: 70,
+                                      height: 0.8,
                                      forceStrutHeight: true,
                                       ),
-                                    style: TextStyle(
-                                      fontSize: 70,
+
+                              style: TextStyle(
+                                fontSize: 70,
+                              fontWeight:FontWeight.w700,
+                              foreground: Paint()..shader=ImageShader( image!,
+                                TileMode.repeated ,
+                                TileMode.clamp,
+                                Matrix4.identity().storage, ) ),),
+                          )
+
+
+                        // ShaderMask(
+                        //   blendMode: BlendMode.srcIn,
+                        //   shaderCallback: (Rect bounds) {
+                        //     return ImageShader(
+                        //       image!,
+                        //       TileMode.decal,
+                        //       TileMode.decal,
+                        //       Matrix4.identity().storage,
+                        //     );
+                        //     //  RadialGradient(
+                        //     //   center: Alignment.center,
+                        //     //   radius: 0.5,
+                        //     //   colors: <Color>[Colors.yellow, Colors.deepOrange.shade900],
+                        //     //   tileMode: TileMode.mirror,
+                        //     // ).createShader(bounds);
+                        //   },
+                        //   child: 
+                        
+                        //        const SizedBox(width: 200,
+                        //          child: Padding(
+                        //            padding: EdgeInsets.only(top: 20),
+                        //            child: Text(
+                        //             'OTUS FOOD',
+                                
+                        //             strutStyle: StrutStyle( fontFamily: 'Roboto',
+                        //             fontSize: 80,
+                        //               height: 0.7,
+                        //              forceStrutHeight: true,
+                        //               ),
+                        //             style: TextStyle(
+                        //               fontSize: 70,
                                    
-                                        fontWeight: FontWeight.w900,
-                                        fontFamily: 'Roboto',
+                        //                 fontWeight: FontWeight.w900,
+                        //                 fontFamily: 'Roboto',
                                      
-                                        ),
+                        //                 ),
                                         
                                        
-                              ),
-                                 ),
-                               ),
+                        //       ),
+                        //          ),
+                        //        ),
 
-                          // Column(
-                          //   children: const [
-                          //     Text(
-                          //       'OTUS',
-                          //       // toolbarOptions:
-                          //       //     ToolbarOptions(copy: true, selectAll: true),
-                          //       style: TextStyle(
-                          //           fontSize: 70,
-                          //           fontWeight: FontWeight.bold,
-                          //           fontFamily: 'Roboto'),
-                          //     ),
-                          //     Text(
-                          //       'FOOD',
-                          //       // toolbarOptions:
-                          //       //     ToolbarOptions(copy: true, selectAll: true),
-                          //       style: TextStyle(
-                          //           fontSize: 70,
-                          //           fontWeight: FontWeight.bold,
-                          //           fontFamily: 'Roboto'),
-                          //     ),
-                          //   ],
-                          // ),
-                        ),
+                          
+                        // ),
+
+
                       ),
                     ),
                  
@@ -151,5 +156,12 @@ Route _createRoute() {
       );
     },
   );
+
 }
 
+// Widget text(String text, Image image){
+//   return Text(text, style: TextStyle(foreground: Paint()..shader=ImageShader( image,
+//                               TileMode.decal,
+//                               TileMode.decal,
+//                               Matrix4.identity().storage, ) ),);
+// }
