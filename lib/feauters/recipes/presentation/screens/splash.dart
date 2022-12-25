@@ -2,7 +2,7 @@ import 'dart:ui' as ui;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_recipe/screens/listRecipe.dart';
+import 'package:flutter_recipe/feauters/recipes/presentation/screens/listRecipe.dart';
 //import 'package:intl/intl.dart';
 
 

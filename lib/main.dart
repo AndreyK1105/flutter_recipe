@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_recipe/screens/listRecipe.dart';
+//import 'package:flutter_recipe/presentation/screens/listRecipe.dart';
 
-import 'package:flutter_recipe/screens/splash.dart';
+
+import 'feauters/recipes/presentation/screens/splash.dart';
 
 void main() {
   runApp(const MyApp());

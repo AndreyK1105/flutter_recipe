@@ -30,6 +30,7 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   flutter_svg: ^1.1.6
+  flutter_bloc: ^8.1.1
   flutter:
     sdk: flutter
 

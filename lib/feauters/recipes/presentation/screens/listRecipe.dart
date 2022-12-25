@@ -1,10 +1,7 @@
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter_recipe/recipe.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+
+import '../../domain/entities/recipe.dart';
 
 class ListRecipe extends StatefulWidget {
   const ListRecipe({super.key});
@@ -101,6 +98,7 @@ List cookStepTime=[cookStepTimeLosos, cookStepTimePoke, cookStepTimeSteik, cookS
 
     super.initState();
   }
+  @override
   Widget build(BuildContext context) {
 
 
