@@ -1,19 +1,37 @@
-class Recipe {
-  String name='';
-  String img='';
-  String time='';
-  List <Ingredient> ingredients=[];
-  List<Cook> cook=[];
-  Recipe({required this.name, required this.img, required this.time, 
-  required this.ingredients, required this.cook});
+import '../../domain/entities/recipe.dart';
+import 'package:dio/dio.dart';
+import 'dart:convert';
 
-  factory Recipe.fromJson(Map<String, dynamic> json){
-    print('json[title]=${json['image']}');
-    return Recipe(name: json['title'] as String,
-     img: json['image'] as String, 
-     time: 'time', 
-    ingredients: [], cook: []);
-  }
+abstract class DataSourseRemote {
+ Future< List<Recipe>> getRecipeRemote();
+}
+
+class DataSourseRemoteImpl implements DataSourseRemote {
+
+final dio=Dio();
+
+  @override
+  Future<List<Recipe>> getRecipeRemote() async {
+ var response = await dio.get('https://api.spoonacular.com/food/menuItems/search?apiKey=f64ea6b1ea14465c801f25972db69cd1&query=burger&number=20'); 
+    // print('response.statusCode=${response.statusCode}');
+    //  print('response.data=${response.data}');
+    //throw UnimplementedError();
+    if(response.statusCode==200){
+     final recipes =response.data;
+    // print('response.statusCode=${response.statusCode}');
+    // print('response.data=${response.data}');
+     List<Recipe> list=[];
+     list= await(recipes['menuItems'] as List).map((recipe) => Recipe.fromJson(recipe)).toList();
+     print(list[0]);
+     print('lengh list<Recipe>=${list.length}');
+     return list;
+    
+  }else {
+    print('response.statusCode=${response.statusCode}');
+    return throw UnimplementedError();};
+
+
+}
 }
 
 /*
@@ -22,16 +40,3 @@ class Recipe {
  {id: 224185, title: Papa Burger, image: https://images.spoonacular.com/file/wximages/224185-312x231.jpg, imageType: jpg, restaurantChain: A&W, servingSize: 282g, readableServingSize: 7 oz, servings: {number: 1, size: 282, unit: g}}, 
  {id: 264615, title: Taco Burger w/ Cheese, image: https://images.spoonacular.com/file/wximages/264615-312x231.png, imageType: png, restaurantChain: Taco John's, servingSize: 142g, readableServingSize: 5 oz, servings: {number: 1, size: 142, unit: g}}], offset: 0, number: 4, totalMenuItems: 6748, processingTimeMs: 148, expires: 1672300739475, isStale: false}
 */
-
-class Ingredient {
-
-  String ingredient ='';
-  String volume ='';
-Ingredient({required this.ingredient, required this.volume});
-}
- 
-class Cook {
-  String step='';
-  String timeStep='';
-  Cook({required this.step, required this.timeStep});
-}

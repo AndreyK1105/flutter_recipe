@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
-//import 'package:flutter_recipe/presentation/screens/listRecipe.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_recipe/feauters/recipes/data/datasources/data_sours_remote.dart';
+import 'package:flutter_recipe/feauters/recipes/data/repository/repository_remote.dart';
+import 'package:flutter_recipe/feauters/recipes/presentation/bloc/list_recipe_cubit/list_recipe_cubit.dart';
+import 'package:flutter_recipe/feauters/recipes/presentation/screens/listRecipe.dart';
 
-
+import 'feauters/recipes/data/datasources/data_source_strukt.dart';
+import 'feauters/recipes/data/repository/repository_local.dart';
+import 'feauters/recipes/presentation/screens/recipe_card.dart';
 import 'feauters/recipes/presentation/screens/splash.dart';
 
 void main() {
@@ -15,23 +21,37 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    return MaterialApp(
-      title: 'My recipe',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blueGrey,
-      ),
-      home:  const Splash()
+    return MultiBlocProvider (
+      providers: [
+        BlocProvider<ListRecipeCubit>(
+          create: (_)=> ListRecipeCubit(recipeRepository: 
+          
+          //RecipeRepositoryRemote(dataSourseRemote: DataSourseRemoteImpl())
+
+          RecipeRepositoryLocal(dataSourseStrukt: DataSourseStrukt() )
+
+          
+          )..getRecipe(), )
+      ],
+      child: MaterialApp(
+        title: 'My recipe',
+        theme: ThemeData(
       
-      //const MyHomePage(title: 'Flutter Demo Home Page'),
+        colorScheme: ColorScheme.light(primary: Colors.white, onPrimary: Colors.black),
+        //  primarySwatch: Colors.green ,
+        primaryColor: Colors.white,
+        ),
+       initialRoute: '/',
+       routes: {
+        '/':(context) => const Splash(),
+        '/listRecipe':(context) => ListRecipe(),
+        '/recipeCard':(context) => RecipeCard()
+       },
+        
+       // home:  const Splash()
+        
+        //const MyHomePage(title: 'Flutter Demo Home Page'),
+      ),
     );
   }
 }
