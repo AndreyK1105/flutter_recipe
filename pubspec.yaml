@@ -80,6 +80,7 @@ flutter:
     - assets/icons_png/icon_pizza_green.png
     - assets/icons_png/icon_user_black.png
     - assets/icons_png/icon_user_green.png
+    - assets/icons_png/icons8-изображение-96 1.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

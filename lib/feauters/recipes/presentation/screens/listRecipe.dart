@@ -19,7 +19,7 @@ final cubit=ListRecipeCubit(recipeRepository:  RecipeRepositoryRemote(dataSourse
 
     return Scaffold(
       backgroundColor: const Color(0xFFECECEC),
-      floatingActionButton: FloatingActionButton(onPressed: (){BlocProvider.of<ListRecipeCubit>(context).getRecipe();}),  //cubit.getRecipe();
+      //floatingActionButton: FloatingActionButton(onPressed: (){BlocProvider.of<ListRecipeCubit>(context).getRecipe();}),  //cubit.getRecipe();
       body: BlocBuilder<ListRecipeCubit, ListRecipeState>(
         builder: (context, state) {
 
