@@ -1,8 +1,16 @@
+import 'package:hive/hive.dart';
+part 'recipe.g.dart';
+ @HiveType(typeId: 0)
 class Recipe {
+  @HiveField(0)
   String name='';
+  @HiveField(1)
   String img='';
+  @HiveField(2)
   String time='';
+  @HiveField(3)
   List <Ingredient> ingredients=[];
+  @HiveField(4)
   List<Cook> cook=[];
   Recipe({required this.name, required this.img, required this.time, 
   required this.ingredients, required this.cook});
@@ -23,15 +31,20 @@ class Recipe {
  {id: 264615, title: Taco Burger w/ Cheese, image: https://images.spoonacular.com/file/wximages/264615-312x231.png, imageType: png, restaurantChain: Taco John's, servingSize: 142g, readableServingSize: 5 oz, servings: {number: 1, size: 142, unit: g}}], offset: 0, number: 4, totalMenuItems: 6748, processingTimeMs: 148, expires: 1672300739475, isStale: false}
 */
 
+ @HiveType(typeId: 1)
 class Ingredient {
 
+ @HiveField(0)
   String ingredient ='';
+  @HiveField(1) 
   String volume ='';
 Ingredient({required this.ingredient, required this.volume});
 }
- 
+@HiveType(typeId: 2)
 class Cook {
+  @HiveField(0) 
   String step='';
+  @HiveField(1)
   String timeStep='';
   Cook({required this.step, required this.timeStep});
 }

@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
 class CommentsWidget extends StatefulWidget {
   const CommentsWidget({super.key});
@@ -12,27 +9,33 @@ class CommentsWidget extends StatefulWidget {
 
 class _CommentsWidgetState extends State<CommentsWidget> {
 
-  TextEditingController textEditingController=TextEditingController();
+   late TextEditingController _textEditingController; //=TextEditingController();
        
   
-
+@override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _textEditingController=TextEditingController();
+  }
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    textEditingController.dispose();
+    _textEditingController.dispose();
   }
   @override
   Widget build(BuildContext context) {
     return Column(children: [
+    
 
   Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-    Expanded(flex: 1, child: CircleAvatar (radius: 31,  backgroundImage: AssetImage( 'assets/images/back_food.png'))),
+    const Expanded(flex: 1, child: CircleAvatar (radius: 31,  backgroundImage: AssetImage( 'assets/images/back_food.png'))),
     Expanded(flex: 3,
       child: Column(children: [
         Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Text('name'), Text('data')] ),
                const SizedBox(height: 20,),
-               Text ('DescriptionЯ не большой любитель рыбы, но решила приготовить по этому рецепту и просто влюбилась!  '),
+               const Text ('DescriptionЯ не большой любитель рыбы, но решила приготовить по этому рецепту и просто влюбилась!  '),
                const SizedBox(height: 20,),
                SizedBox(
                 width: 315, height: 160,
@@ -57,18 +60,20 @@ class _CommentsWidgetState extends State<CommentsWidget> {
                 decoration: BoxDecoration(
                     border: Border.all(
                         width: 2,
-                        color: Color(0xFF165932),
+                        color: const Color(0xFF165932),
                         style: BorderStyle.solid),
                     borderRadius: BorderRadius.circular(5)),
                  child: Row(
                  // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                const Expanded(child: Padding(
-                  padding: EdgeInsets.only(left: 14),
+                 Expanded(child: Padding(
+                  padding: const EdgeInsets.only(left: 14),
                   child: TextField(
+                   
+                    controller: _textEditingController, 
                     cursorColor: Colors.blue,
-                     //controller: textEditingController,  
-                     decoration: InputDecoration(
+                   onSubmitted: (value) => {print(value)},
+                     decoration: const InputDecoration(
                      hintStyle: TextStyle(color: Colors.black) , hintText: 'оставить коментарий'
                       ),
                        ),

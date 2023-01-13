@@ -1,8 +1,11 @@
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_recipe/feauters/recipes/presentation/bloc/list_recipe_cubit/list_recipe_cubit.dart';
 import 'package:flutter_recipe/feauters/recipes/presentation/bloc/list_recipe_cubit/list_recipe_state.dart';
+import 'package:hive/hive.dart';
+import 'package:path_provider/path_provider.dart';
 
 import '../../data/datasources/data_sours_remote.dart';
 import '../../data/repository/repository_remote.dart';
@@ -13,6 +16,11 @@ class ListRecipe extends StatelessWidget {
  
 List<Recipe> recipes=[];
 final cubit=ListRecipeCubit(recipeRepository:  RecipeRepositoryRemote(dataSourseRemote: DataSourseRemoteImpl()));
+ var box = Hive.box<Recipe>('Recipes');
+  List<Recipe> listRecipe=[];
+late  int bz;
+ 
+  late Recipe recipe;
   @override
   Widget build(BuildContext context) {
      
@@ -49,7 +57,26 @@ final cubit=ListRecipeCubit(recipeRepository:  RecipeRepositoryRemote(dataSourse
         return const CircularProgressIndicator();
         },
       ),
-  
+  // floatingActionButton: FloatingActionButton(onPressed: () async => {
+  //   if(recipes.length>0){
+      
+       
+  //     // box.addAll(recipes),
+  //      //box.putAll ('listRecipe', recipes),
+
+
+  //   },
+    
+  //     bz=box.length  ,
+  //     print(bz),
+  //     for(int i=0; i<bz; i++){
+  //        recipe= await box.getAt(i)! as Recipe,
+  //         listRecipe.add(recipe),
+  //         print(listRecipe.last.cook[0].step)
+  //     },
+  // //    recipe=box.getAt(0)!,
+  // // print(recipe.cook[1].step)
+  // },),
     );
   }
 }

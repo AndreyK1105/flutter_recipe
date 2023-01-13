@@ -229,7 +229,13 @@ stepsCook(Recipe recipe){ return Column(children: [
 
 Widget ingredientRow({required String ingridient, required String valume}) {
   return Row(
-    children: [Text(ingridient), Text(valume)],
+    children: [Text('· $ingridient', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500,),), Text(valume)],
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
   );
+}
+
+
+class MyBottom extends BottomNavigationBarItem{
+  MyBottom({required super.icon});
+  
 }
