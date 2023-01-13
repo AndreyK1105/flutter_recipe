@@ -1,20 +1,8 @@
-import 'dart:ui';
+import '../../domain/entities/recipe.dart';
 
-import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter_recipe/recipe.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+class DataSourseStrukt{
 
-class ListRecipe extends StatefulWidget {
-  const ListRecipe({super.key});
 
-  @override
-  State<ListRecipe> createState() => _MyWidgetState();
-}
-
-class _MyWidgetState extends State<ListRecipe> {
-  List<ListTile> recipe =[];
 List images=['assets/images/recipe_losos.png','assets/images/recipe_poke.png', 'assets/images/recipe_steik.png','assets/images/recipe_tost.png', 'assets/images/recipe_pasta.png', 'assets/images/recipe_burger.png', 'assets/images/recipe_pizza.png'];
 List name=['Лосось в соусе терияки', "Поке боул с сыром тофу",'Стейк из говядины по-грузински', 'Тосты с голубикой и бананом', 'Паста с морепродуктами', 'Бургер с двумя котлетами','Пицца Маргарита домашняя'];
 List time=['45 минут', '30 минут', '1 час 15 минут','45 минут', '25 минут', '1 час','25 минут'];
@@ -65,19 +53,19 @@ List cookStepsPizza=['В Тесто для пиццы раскатываем т�
 'Кладем сыр, помидоры и базилик на основу, ставим в духовку еще на 10 минут. Пицца готова, когда сыр расплавится. '];
 List cookStepTimePizza=['01:00', '01:00', '01:00', '10:00', '01:00', '01:00', '10:00'];
 
-List <Recipe> recipes=[];
 
 
-@override
-  void initState() {
-    // TODO: implement initState
 
-List  ingr =[ingredientsLosos, ingrPoke, ingrSteik, ingrTost, ingrPasta, ingrBurger, ingredientsPizza];
+  Future <List<Recipe>> getRecipe() async {
+
+     List <Recipe> recipes=[];
+
+    List  ingr =[ingredientsLosos, ingrPoke, ingrSteik, ingrTost, ingrPasta, ingrBurger, ingredientsPizza];
 List ingrVol  =[ingrVolumeLosos, ingrVolPoke, ingrVolSteik, ingrVolTost, ingrVolPasta, ingrVolBurger, ingrVolumePizza];
 List cookStep= [cookStepsLosos, cookStepsPoke, cookStepsSteik, cookStepsTost, cookStepsPasta, cookStepsBurger, cookStepsPizza];
 List cookStepTime=[cookStepTimeLosos, cookStepTimePoke, cookStepTimeSteik, cookStepTimeTost, cookStepTimePasta, cookStepTimeBurger, cookStepTimePizza];
      
-     List<ListTile> tile =[];
+   
      for (int i=0; i<name.length; i++){
       List <Ingredient>ingredients=[];  
          for(int j=0; j<ingr[i].length; j++){ 
@@ -93,110 +81,9 @@ List cookStepTime=[cookStepTimeLosos, cookStepTimePoke, cookStepTimeSteik, cookS
 
           recipes.add(Recipe(name: name[i], img: images[i], time: time[i], ingredients: ingredients, cook: cooks));
 
-          tile.add(ListTile( title: Text(recipes.last.name),));
-
-
-     } 
-
-
-    super.initState();
+    
   }
-  Widget build(BuildContext context) {
-
-
-
-     
-
-    return Scaffold(
-      backgroundColor: const Color(0xFFECECEC),
-      body: ListView.builder(
-       // physics:const ScrollPhysics(parent:BouncingScrollPhysics() ) ,
-        physics:const BouncingScrollPhysics() ,
-        itemCount: recipes.length,
-        //prototypeItem: ListTile(title: Text(recipes.first.name)),
-        itemBuilder: (context, index) {
-         return 
-
-         Padding(
-           padding: const EdgeInsets.fromLTRB(16.0, 0, 16, 0),
-           child: ListTileCastom(index: index, title: recipes[index].name, subtitle: recipes[index].time, img: recipes[index].img),
-         );
-       
-         }),
-  
-    );
-  }
+ // return await Future.delayed(Duration(microseconds: 1), (() => recipes));
+  return recipes;
 }
-// ignore: must_be_immutable
-class ListTileCastom extends StatelessWidget{
-  int index=0;
-  String title='';
-  String subtitle='';
-  String img='';
-  ListTileCastom({super.key, required this.index, required this.title, required this.subtitle, required this.img });
-  
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(0,12,0,12),
-      child: Container (
-               
-              decoration: BoxDecoration(
-                border:Border.all(width: 0, 
-                color: const Color.fromARGB(255, 255, 255, 255) 
-                ),
-                borderRadius: BorderRadius.circular(5),
-                color: Colors.white,
-                ),
-               // 
-               child: Row(children: [
-                Image.asset(img),
-                Container(width: 16,),
-                Expanded(
-                  child: Column(
-
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                    
-                    Text(title, 
-                      softWrap: true,
-                      maxLines: 2,
-                      //textAlign: TextAlign.left,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(fontSize: 22, fontFamily: 'Roboto', fontWeight: FontWeight.w500, 
-                      ),),
-                   Container(height: 12,),
-
-                 
-
-                    Row(mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        const Icon(Icons.access_time , size: 20,),
-                      Container(width: 12,),
-                      Text(subtitle, 
-                      maxLines: 2,
-                      softWrap: true,
-                      overflow: TextOverflow.clip, 
-                      style: const TextStyle(fontFamily: 'Roboto', fontSize: 16, fontWeight: FontWeight.w400, color: Color(0xFF2ECC71)),
-                      ),
-                      Container(width: 12,)
-                      ],),
-                    
-                    // Row(
-                    //   children: [
-                    //     Text(subtitle, overflow: TextOverflow.ellipsis,),
-                      // ],
-                  //  ) 
-                  
-                  ],),
-                )
-               ],)  
-               ),
-    );
-  }
-  
- 
-
-
 }

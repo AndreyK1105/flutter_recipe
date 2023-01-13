@@ -1,36 +1,86 @@
+import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_recipe/screens/listRecipe.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_recipe/feauters/recipes/data/datasources/data_sourse_hive.dart';
+import 'package:flutter_recipe/feauters/recipes/presentation/bloc/list_recipe_cubit/list_recipe_cubit.dart';
+import 'package:hive/hive.dart';
+import 'feauters/recipes/data/datasources/data_source_strukt.dart';
+import 'feauters/recipes/data/repository/repository_local.dart';
+import 'package:path_provider/path_provider.dart' as path_provider;
 
-import 'package:flutter_recipe/screens/splash.dart';
+import 'feauters/recipes/domain/entities/recipe.dart';
+import 'feauters/recipes/presentation/screens/listRecipe.dart';
+import 'feauters/recipes/presentation/screens/recipe_card.dart';
+import 'feauters/recipes/presentation/screens/splash.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+
+  // ignore: non_constant_identifier_names
+  final AppDir= await path_provider.getApplicationDocumentsDirectory();
+  Hive.init(AppDir.path);
+  Hive.registerAdapter(RecipeAdapter());
+  Hive.registerAdapter(IngredientAdapter());
+  Hive.registerAdapter(CookAdapter()); 
+  await Hive.openBox<Recipe>('Recipes');
+ 
+  runApp( MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+   const MyApp({super.key});
+
+  // final routerDelegat = BeamerDelegate(
+  //   initialPath: '/',
+  //   locationBuilder: RoutesLocationBuilder( 
+  //     routes:{
+  //       '*':(context, state, data)=> const ScaffoldWithBottomNavBar()
+  //     },
+  //      ),
+  //      );
 
  
   @override
   Widget build(BuildContext context) {
 
-    return MaterialApp(
-      title: 'My recipe',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blueGrey,
-      ),
-      home:  const Splash()
+    return MultiBlocProvider (
+      providers: [
+        BlocProvider<ListRecipeCubit>(
+          create: (_)=> ListRecipeCubit(recipeRepository: 
+          
+          //RecipeRepositoryRemote(dataSourseRemote: DataSourseRemoteImpl())
+
+          RecipeRepositoryLocal(dataSourseLocalHive: DataSourseLocalHiveImpl() )
+
+
+
+          
+          )..getRecipe(), )
+      ],
+      child: MaterialApp(
+        title: 'My recipe',
+        theme: ThemeData(
       
-      //const MyHomePage(title: 'Flutter Demo Home Page'),
+        colorScheme: ColorScheme.light(primary: Colors.white, onPrimary: Colors.black),
+        //  primarySwatch: Colors.green ,
+        primaryColor: Colors.white,
+        ),
+       
+       // routeInformationParser: BeamerParser(),
+        //  routerDelegate: routerDelegat,
+        // backButtonDispatcher: BeamerBackButtonDispatcher(delegate: routerDelegat,),
+
+
+       initialRoute: '/',
+       routes: {
+        '/':(context) => const Splash(),
+        '/listRecipe':(context) => ListRecipe(),
+        '/recipeCard':(context) => RecipeCard()
+       },
+        
+       //home:  const Splash()
+        
+        //const MyHomePage(title: 'Flutter Demo Home Page'),
+      ),
     );
   }
 }
