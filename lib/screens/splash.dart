@@ -2,7 +2,7 @@ import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_recipe/screens/listRecipe.dart';
-//import 'package:intl/intl.dart';
+
 
 class Splash extends StatelessWidget {
   const Splash({Key? key}) : super(key: key);
