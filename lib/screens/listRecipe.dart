@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_recipe/data/data_source_strukt.dart';
+import 'package:flutter_recipe/data/data_source_strukture.dart';
 import 'package:flutter_recipe/recipe.dart';
 
 class ListRecipe extends StatefulWidget {
@@ -12,7 +12,7 @@ class ListRecipe extends StatefulWidget {
 class _MyWidgetState extends State<ListRecipe> {
  
   List<Recipe> recipes = [];
-DataSourseStrukt dataSourseStrukt=DataSourseStrukt();
+DataSourseStrukture dataSourseStrukt=DataSourseStrukture();
   @override
   void initState() {
     super.initState();
@@ -52,13 +52,13 @@ DataSourseStrukt dataSourseStrukt=DataSourseStrukt();
   }
 }
 
-// ignore: must_be_immutable
+
 class ListTileCastom extends StatelessWidget {
-  int index = 0;
-  String title = '';
-  String subtitle = '';
-  String img = '';
-  ListTileCastom(
+final  int index ;
+  final String title ;
+  final String subtitle ;
+  final String img ;
+   const ListTileCastom(
       {super.key,
       required this.index,
       required this.title,

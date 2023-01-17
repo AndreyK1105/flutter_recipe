@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 
 import '../recipe.dart';
 
-class DataSourseStrukt {
+class DataSourseStrukture {
   Future<List<Recipe>> getRecipe() async {
     List<Recipe> recipes = [];
 
