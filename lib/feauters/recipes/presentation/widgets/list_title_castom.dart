@@ -24,9 +24,9 @@ class ListTileCastom extends StatelessWidget{
                child: Row(children: [
 
 
-                Image.asset(img),
-                // SizedBox(height: 136, width: 150,
-                //   child: Image.network(img)),
+               // Image.asset(img),
+                SizedBox(height: 136, width: 150,
+                  child: Image.asset(img)),
                 
                 Container(width: 16,),
                 Expanded(

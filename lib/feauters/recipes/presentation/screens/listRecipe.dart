@@ -8,14 +8,14 @@ import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../../data/datasources/data_sours_remote.dart';
-import '../../data/repository/repository_remote.dart';
+
 import '../../domain/entities/recipe.dart';
 import '../widgets/list_title_castom.dart';
 
 class ListRecipe extends StatelessWidget {
  
 List<Recipe> recipes=[];
-final cubit=ListRecipeCubit(recipeRepository:  RecipeRepositoryRemote(dataSourseRemote: DataSourseRemoteImpl()));
+//final cubit=ListRecipeCubit(recipeRepository:  RecipeRepositoryRemote(dataSourseRemote: DataSourseRemoteImpl()));
  var box = Hive.box<Recipe>('Recipes');
   List<Recipe> listRecipe=[];
 late  int bz;
