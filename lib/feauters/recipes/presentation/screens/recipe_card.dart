@@ -18,7 +18,7 @@ class RecipeCard extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Рецепт'),
+        title: const Text('Рецепт'),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -34,9 +34,9 @@ class RecipeCard extends StatelessWidget {
                 const SizedBox( height: 20, ),
                 stepsCook(recipe),
                  const SizedBox( height: 20, ),
-                 Divider(thickness: 1,color: Color(0xFF797676),),
+                 const Divider(thickness: 1,color: Color(0xFF797676),),
                  const SizedBox( height: 20, ),
-                CommentsWidget(), 
+                const CommentsWidget(), 
 
                
             ],
@@ -60,7 +60,7 @@ header(Recipe recipe) {
                 style:
                     const TextStyle(fontSize: 24, fontWeight: FontWeight.w500)),
           ),
-                  IconButton(icon: Icon(Icons.favorite), color: Colors.red, onPressed: () { } )
+                  IconButton(icon: const Icon(Icons.favorite), color: Colors.red, onPressed: () { } )
         ],
       ),
       const SizedBox(height: 15),
@@ -81,7 +81,7 @@ header(Recipe recipe) {
                 width: 396,
         child: Stack(
           children: [
-            Container(
+            SizedBox(
                 height: 220,
                 width: 396,
                 child: Image.asset(
@@ -122,7 +122,7 @@ ingredients(Recipe recipe){return
                 decoration: BoxDecoration(
                     border: Border.all(
                         width: 3,
-                        color: Color(0xFF2ECC71),
+                        color: const Color(0xFF2ECC71),
                         style: BorderStyle.solid),
                     borderRadius: BorderRadius.circular(5)),
                 child: Padding(
@@ -163,7 +163,7 @@ stepsCook(Recipe recipe){ return Column(children: [
                 onTap: () => {},
                 child: Container(width: 232, height: 48,
                 decoration: BoxDecoration(color: Color(0xFF165932), borderRadius: BorderRadius.circular(24)),
-                child:Center(child: Text('Начать готовить', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight:FontWeight.w500,))) ,
+                child:const Center(child: Text('Начать готовить', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight:FontWeight.w500,))) ,
                 ),
               ),
 ],);}
@@ -229,13 +229,13 @@ stepsCook(Recipe recipe){ return Column(children: [
 
 Widget ingredientRow({required String ingridient, required String valume}) {
   return Row(
-    children: [Text('· $ingridient', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500,),), Text(valume)],
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: [Text('· $ingridient', style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500,),), Text(valume)],
   );
 }
 
 
-class MyBottom extends BottomNavigationBarItem{
-  MyBottom({required super.icon});
+// class MyBottom extends BottomNavigationBarItem{
+//   MyBottom({required super.icon});
   
-}
+// }
