@@ -37,6 +37,8 @@ dependencies:
   hive_flutter: ^1.1.0
   flutter_network_connectivity: ^0.0.6
   internet_connection_checker: ^1.0.0+1
+  image_picker: ^0.8.6+3
+  intl: ^0.18.0
   
   flutter:
     sdk: flutter
@@ -93,6 +95,7 @@ flutter:
     - assets/rive/new_file1.riv
     - assets/rive/little_machine.riv
     - assets/rive/off_road_car.riv
+
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

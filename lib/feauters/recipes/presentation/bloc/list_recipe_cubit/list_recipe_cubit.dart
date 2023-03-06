@@ -23,6 +23,7 @@ class ListRecipeCubit extends Cubit<ListRecipeState> {
 // });
 //     await flutterNetworkConnectivity.registerAvailabilityListener();
 //   }
+
   void getRecipe() async {
     // await flutterNetworkConnectivity.registerAvailabilityListener();
 
@@ -31,8 +32,8 @@ class ListRecipeCubit extends Cubit<ListRecipeState> {
     //print('2state =$state');
     //bool isNetwork = await InternetConnectionChecker().hasConnection;
     // isNetwork=true;
-
-    final recipes = await recipeRepositoryImpl.getRecipe();
+    final recipes = await recipeRepositoryImpl.getRecipes();
+    //print('recipi in cubit${recipes.length}');
     emit(ListRecipeLoaded(list: recipes));
   }
 }

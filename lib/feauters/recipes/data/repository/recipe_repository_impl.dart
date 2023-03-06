@@ -1,13 +1,16 @@
 import 'package:flutter_recipe/core/network_cheker.dart';
-import 'package:flutter_recipe/feauters/recipes/data/datasources/data_sours_remote.dart';
-import 'package:flutter_recipe/feauters/recipes/data/datasources/data_sourse_file.dart';
 import 'package:flutter_recipe/feauters/recipes/data/datasources/data_sourse_hive.dart';
 import 'package:flutter_recipe/feauters/recipes/domain/entities/recipe.dart';
+import 'package:flutter_recipe/feauters/recipes/domain/entities/user.dart';
 import 'package:flutter_recipe/feauters/recipes/domain/repository/recipe_repository.dart';
+import 'package:flutter_recipe/feauters/recipes/presentation/bloc/comments_widget_bloc/comments_widget_cubit.dart';
+
+import '../datasources/data_source_file.dart';
+import '../datasources/data_source_remote.dart';
 
 class RecipeRepositoryImpl implements RecipeRepository {
-  DataSourseRemote dataSourseRemote;
-  DataSourseLocalHive dataSourseLocalHive;
+  DataSourceRemote dataSourseRemote;
+  DataSourceLocalHive dataSourseLocalHive;
   DataSourseFile dataSourseFile;
   NetworkCheker networkCheker = NetworkCheker();
 
@@ -17,12 +20,10 @@ class RecipeRepositoryImpl implements RecipeRepository {
       required this.dataSourseFile});
 
   @override
-  Future<List<Recipe>> getRecipe() async {
-    //bool isNetwork = await networkCheker.isInternetConnection();
-
+  Future<List<Recipe>> getRecipes() async {
     List<Recipe> recipes = [];
 
-    recipes = await dataSourseFile.getRecipe();
+    recipes = await dataSourseRemote.getRecipeRemote();
 
     // if (isNetwork) {
     //    recipes = await dataSourseRemote.getRecipeRemote();
@@ -32,5 +33,49 @@ class RecipeRepositoryImpl implements RecipeRepository {
     // }
 
     return recipes;
+  }
+
+  @override
+  Future<int> getAgregatelikes(String recipeId) async {
+    int aggregateLikes = await dataSourseRemote.getAgregatelikes(recipeId);
+    return aggregateLikes;
+  }
+
+  @override
+  Future<List<String>> getLikeUsersId(String recipeId) async {
+    List<String> likeUsersId = await dataSourseRemote.getLikeUsersId(recipeId);
+    return likeUsersId;
+  }
+
+  @override
+  Future<int> changeLikeCurentUser(String recipeId, String curentUserId) async {
+    int aggregateLikes =
+        await dataSourseRemote.changeLikeCurentUser(recipeId, curentUserId);
+    return aggregateLikes;
+  }
+
+  @override
+  Future<void> addComment(
+      String recipeId, String userId, String comment, String img) async {
+    await dataSourseRemote.addComment(recipeId, userId, comment, img);
+  }
+
+  @override
+  Future<User> getUser(String userId) async {
+    User user = await dataSourseRemote.getUser(userId);
+    return user;
+  }
+
+  @override
+  Future<List<CommentsList>> getComments(String recipeId) async {
+    List<CommentsList> commentsList =
+        await dataSourseRemote.getComments(recipeId);
+    return commentsList;
+  }
+
+  @override
+  Future<Recipe> getRecipe(String recipeId) async {
+    Recipe recipe = await dataSourseRemote.getRecipe(recipeId);
+    throw UnimplementedError();
   }
 }

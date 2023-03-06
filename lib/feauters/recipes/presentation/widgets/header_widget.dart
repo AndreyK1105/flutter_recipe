@@ -1,36 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_recipe/feauters/recipes/data/datasources/data_source_remote.dart';
 import 'package:flutter_recipe/feauters/recipes/domain/entities/recipe.dart';
+import '../bloc/header_widget_cubit/header_widget_cubit.dart';
+import '../bloc/header_widget_cubit/header_widget_state.dart';
 import 'bookmark_icon.dart';
 import 'package:rive/rive.dart';
 
 class HeaderWidget extends StatefulWidget {
   Recipe recipe;
-  HeaderWidget({super.key, required this.recipe});
+  String userId;
+  HeaderWidget({
+    super.key,
+    required this.recipe,
+    required this.userId,
+  });
 
   @override
   State<HeaderWidget> createState() => _HeaderWidgetState();
 }
 
 class _HeaderWidgetState extends State<HeaderWidget> {
-  bool isFavorite = false;
+//  bool isFavorite = false;
   late RiveAnimationController _controller;
-  bool _isPlaying = false;
 
+  ValueNotifier<bool> isFavorite = ValueNotifier<bool>(false);
+
+  DataSourceRemoteImpl dataSourceRemoteImpl = DataSourceRemoteImpl();
+
+  // _controller=OneShotAnimation('bounce',
   @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-
-    // _controller=OneShotAnimation('bounce',
-    // autoplay: false,
-    // onStart: () => setState(() {_isPlaying = true;  }),
-    // onStop: () => setState(() {_isPlaying= false; }),
-    // );
-    _controller = SimpleAnimation('idle');
-  }
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -65,14 +66,24 @@ class _HeaderWidgetState extends State<HeaderWidget> {
 
             IconButton(
                 icon: const Icon(Icons.favorite),
-                color: (isFavorite) ? Colors.red : Colors.black87,
-                onPressed: () {
-                  setState(() {
-                    if (isFavorite)
-                      isFavorite = false;
-                    else
-                      isFavorite = true;
-                  });
+                color: (context.watch<HeaderWidgetCubit>().state
+                        is HeaderWidgetStateLike)
+                    ? Colors.red
+                    : Colors.black87,
+                onPressed: () async {
+                  context
+                      .read<HeaderWidgetCubit>()
+                      .ChangeFavorite(widget.recipe.id, widget.userId);
+                  // context
+                  //     .read<HeaderWidgetCubit>()
+                  //     .getLikeUsersId(widget.recipe.id);
+                  //int likes = await dataSourceRemoteImpl.changeLikeCurentUser(
+                  //  '63e616f1c337a2bc45fb5b7e', '111');
+                  //print('noFavorite= $likes');
+                  {
+                    isFavorite.value = !isFavorite.value;
+                  }
+                  ;
                 })
           ],
         ),
@@ -95,19 +106,20 @@ class _HeaderWidgetState extends State<HeaderWidget> {
           width: 396,
           child: Stack(
             children: [
-              Container(
+              SizedBox(
                   height: 220,
                   width: 396,
-                  child: Image.asset(
+                  child: Image.network(
+                    // 'https://klike.net/uploads/posts/2020-04/1587719791_1.jpg',
                     widget.recipe.img,
                     fit: BoxFit.fitWidth,
                   )),
-              const Align(
+              Align(
                   alignment: Alignment.bottomRight,
                   child: Padding(
                     padding: EdgeInsets.only(bottom: 13),
                     child: BookmarkIcon(),
-                  )),
+                  ))
             ],
           ),
         ),
