@@ -182,6 +182,7 @@ class _StepCookWidgetState extends State<StepCookWidget> {
               context
                   .read<StepsWidgetCobit>()
                   .startCoocking(widget.recipe.cook);
+              //context.o
             } else {
               widget.cookingProcess = false;
               context.read<StepsWidgetCobit>().stopSteps();
