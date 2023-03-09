@@ -13,6 +13,7 @@ import 'package:flutter_recipe/feauters/recipes/presentation/widgets/header_widg
 import 'package:flutter_recipe/feauters/recipes/presentation/widgets/step_cook_widget.dart';
 import 'package:intl/intl.dart';
 
+import '../widgets/botom_app_bar_widget.dart';
 import '../widgets/comments.dart';
 
 class RecipeDetailsScreen extends StatelessWidget {
@@ -24,12 +25,22 @@ class RecipeDetailsScreen extends StatelessWidget {
         ModalRoute.of(context)!.settings.arguments as RecipeArguments;
     Recipe recipe = recipeArguments.recipe;
     String userId = recipeArguments.userId;
-    // int timeCookingSec = 0;
 
+    bool cooking = false;
+    var state = context.read<StepsWidgetCobit>().state;
+    if (state is StepsWidgetStateCooking) {
+      cooking = true;
+    } else {
+      cooking = false;
+    }
+    print('coocing=$cooking');
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: cooking ? Colors.deepPurple : null,
         title: const Text('Рецепт'),
-        // bottom: botomAppBar(context),
+        bottom: PreferredSize(
+            preferredSize: const Size.fromHeight(30),
+            child: BotomAppBarWidget()),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

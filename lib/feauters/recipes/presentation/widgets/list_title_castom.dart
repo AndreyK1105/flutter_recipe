@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class ListTileCastom extends StatelessWidget {
@@ -28,12 +29,25 @@ class ListTileCastom extends StatelessWidget {
             children: [
               // Image.asset(img),
               SizedBox(
-                  height: 130,
-                  width: 130,
-                  child: Image.network(
-                    img,
-                    fit: BoxFit.cover,
-                  )),
+                height: 130,
+                width: 130,
+                child: CachedNetworkImage(
+                  imageUrl: img,
+                  placeholder: (context, url) => const Padding(
+                    padding: EdgeInsets.all(40.0),
+                    child: CircularProgressIndicator(
+                      color: Colors.black,
+                    ),
+                  ),
+                  errorWidget: (context, url, error) => const Icon(Icons.error),
+                  fit: BoxFit.cover,
+                ),
+
+                //  Image.network(
+                //   img,
+                //   fit: BoxFit.cover,
+                // ),
+              ),
               Container(
                 width: 16,
               ),
