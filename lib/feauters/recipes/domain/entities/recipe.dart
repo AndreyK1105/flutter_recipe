@@ -1,4 +1,3 @@
-import 'package:flutter_recipe/feauters/recipes/domain/entities/recipe_spoonac.dart';
 import 'package:flutter_recipe/feauters/recipes/domain/entities/user.dart';
 import 'package:hive/hive.dart';
 part 'recipe.g.dart';

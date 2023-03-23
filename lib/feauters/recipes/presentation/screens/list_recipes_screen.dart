@@ -1,8 +1,5 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_recipe/feauters/recipes/presentation/bloc/comments_widget_bloc/comments_widget_cubit.dart';
 import 'package:flutter_recipe/feauters/recipes/presentation/bloc/list_recipe_cubit/list_recipe_cubit.dart';
 import 'package:flutter_recipe/feauters/recipes/presentation/bloc/list_recipe_cubit/list_recipe_state.dart';
 
@@ -11,23 +8,16 @@ import '../bloc/header_widget_cubit/header_widget_cubit.dart';
 import '../widgets/list_title_castom.dart';
 
 class ListRecipesScreen extends StatelessWidget {
-  List<Recipe> recipes = [];
-//final cubit=ListRecipeCubit(recipeRepository:  RecipeRepositoryRemote(dataSourseRemote: DataSourseRemoteImpl()));
-  // var box = Hive.box<Recipe>('Recipes');
-  List<Recipe> listRecipe = [];
-
-  late Recipe recipe;
-  late RecipeArguments recipeArguments;
-
-  String userId =
-      '63eb7b3ad9918a8acdaac1e1'; // гомер 63f1ef3454557a737ceb9b3 ; коля 63f1f0ac54557a737ceb9b3e ; света 63f1f14a54557a737ceb9b40 ; андрей 63eb7b3ad9918a8acdaac1e1
-
-  ListRecipesScreen({super.key});
+  const ListRecipesScreen({super.key});
   @override
   Widget build(BuildContext context) {
+    List<Recipe> recipes = [];
+    late RecipeArguments recipeArguments;
+    String userId =
+        '63eb7b3ad9918a8acdaac1e1'; // гомер 63f1ef3454557a737ceb9b3 ; коля 63f1f0ac54557a737ceb9b3e ; света 63f1f14a54557a737ceb9b40 ; андрей 63eb7b3ad9918a8acdaac1e1
+
     return Scaffold(
       backgroundColor: const Color(0xFFECECEC),
-      //floatingActionButton: FloatingActionButton(onPressed: (){BlocProvider.of<ListRecipeCubit>(context).getRecipe();}),  //cubit.getRecipe();
       body: SafeArea(
         child: BlocBuilder<ListRecipeCubit, ListRecipeState>(
           builder: (context, state) {
@@ -61,29 +51,11 @@ class ListRecipesScreen extends StatelessWidget {
             }
             return const Center(
                 child: CircularProgressIndicator(
-              color: Colors.black,
+              color: Color.fromARGB(255, 8, 148, 26),
             ));
           },
         ),
       ),
-      // /floatingActionButton: FloatingActionButton(onPressed: () async => {
-      //   if(recipes.length>0){
-
-      //     // box.addAll(recipes),
-      //      //box.putAll ('listRecipe', recipes),
-
-      //   },
-
-      //     bz=box.length  ,
-      //     print(bz),
-      //     for(int i=0; i<bz; i++){
-      //        recipe= await box.getAt(i)! as Recipe,
-      //         listRecipe.add(recipe),
-      //         print(listRecipe.last.cook[0].step)
-      //     },
-      // //    recipe=box.getAt(0)!,
-      // // print(recipe.cook[1].step)
-      // },),
     );
   }
 }

@@ -1,18 +1,16 @@
-import 'package:flutter_recipe/core/network_cheker.dart';
-import 'package:flutter_recipe/feauters/recipes/data/datasources/data_sourse_hive.dart';
 import 'package:flutter_recipe/feauters/recipes/domain/entities/recipe.dart';
 import 'package:flutter_recipe/feauters/recipes/domain/entities/user.dart';
 import 'package:flutter_recipe/feauters/recipes/domain/repository/recipe_repository.dart';
 import 'package:flutter_recipe/feauters/recipes/presentation/bloc/comments_widget_bloc/comments_widget_cubit.dart';
 
 import '../datasources/data_source_file.dart';
+import '../datasources/data_source_hive.dart';
 import '../datasources/data_source_remote.dart';
 
 class RecipeRepositoryImpl implements RecipeRepository {
   DataSourceRemote dataSourseRemote;
   DataSourceLocalHive dataSourseLocalHive;
   DataSourseFile dataSourseFile;
-  NetworkCheker networkCheker = NetworkCheker();
 
   RecipeRepositoryImpl(
       {required this.dataSourseRemote,
@@ -76,6 +74,6 @@ class RecipeRepositoryImpl implements RecipeRepository {
   @override
   Future<Recipe> getRecipe(String recipeId) async {
     Recipe recipe = await dataSourseRemote.getRecipe(recipeId);
-    throw UnimplementedError();
+    return recipe;
   }
 }

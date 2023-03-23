@@ -1,8 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_recipe/feauters/recipes/domain/entities/recipe.dart';
 
 import '../../../data/repository/recipe_repository_impl.dart';
-import '../../../domain/entities/user.dart';
 import 'comments_widget_state.dart';
 
 class CommentsWidgetCubit extends Cubit<CommentsWidgetState> {

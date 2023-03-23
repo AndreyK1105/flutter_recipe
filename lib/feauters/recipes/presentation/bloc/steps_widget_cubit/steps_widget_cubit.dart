@@ -17,13 +17,13 @@ class StepsWidgetCobit extends Cubit<StepsWidgetState> {
     List<int> timeStepList =
         List.generate(steps.length, (index) => steps[index].timeStepSec);
     int curentStep = 0;
-    int timeStep = steps.first.timeStepSec;
+
     StepDetails stepDetails = StepDetails(
         curentStep: curentStep,
         checkboxOn: checkboxOn,
         timeStepList: timeStepList);
     countdownTimer = Timer.periodic(
-        Duration(seconds: 1),
+        const Duration(seconds: 1),
         (_) => {
               //print('Timer.periodic'),
               stepDetails = setTimeDown(stepDetails, steps)
@@ -50,7 +50,6 @@ class StepsWidgetCobit extends Cubit<StepsWidgetState> {
   StepDetails setTimeDown(StepDetails stepDetails, List<Cook> steps) {
     if (stepDetails.timeStepList[stepDetails.curentStep] != 0) {
       stepDetails.timeStepList[stepDetails.curentStep]--;
-      //print(stepDetails.timeStepList[stepDetails.curentStep]);
 
       emit(StepsWidgetStateCooking(
           curentStep: stepDetails.curentStep,
@@ -77,7 +76,6 @@ class StepsWidgetCobit extends Cubit<StepsWidgetState> {
         stopTimer();
         return stepDetails;
       }
-      ;
     }
   }
 //  void startTimer() {
@@ -88,23 +86,6 @@ class StepsWidgetCobit extends Cubit<StepsWidgetState> {
   void stopTimer() {
     if (countdownTimer != null) countdownTimer!.cancel();
   }
-
-  // void resetTimer() {
-  //   stopTimer();
-  //   setState(() => myDuration = Duration(seconds: timeCookingSec));
-  // }
-
-  // void setCountDown() {
-  //   const reduceSecondsBy = 1;
-  //   setState(() {
-  //     final seconds = myDuration.inSeconds - reduceSecondsBy;
-  //     if (seconds < 0) {
-  //       countdownTimer!.cancel();
-  //     } else {
-  //       myDuration = Duration(seconds: seconds);
-  //     }
-  //   });
-  // }
 }
 
 class StepDetails {

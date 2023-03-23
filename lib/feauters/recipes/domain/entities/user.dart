@@ -1,4 +1,5 @@
 import 'package:hive/hive.dart';
+part 'user.g.dart';
 
 @HiveType(typeId: 4)
 class User {
@@ -8,6 +9,7 @@ class User {
   String name = '';
   @HiveField(2)
   String avatar = '';
+  @HiveField(3)
   List<String> likeRecipeId;
   User(
       {required this.id,

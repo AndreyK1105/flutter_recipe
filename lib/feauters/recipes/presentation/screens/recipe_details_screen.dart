@@ -1,19 +1,13 @@
-//import 'dart:js';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-//import 'package:flutter/src/widgets/container.dart';
-//import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_recipe/feauters/recipes/domain/entities/recipe.dart';
 import 'package:flutter_recipe/feauters/recipes/presentation/bloc/steps_widget_cubit/steps_widget_cubit.dart';
 import 'package:flutter_recipe/feauters/recipes/presentation/bloc/steps_widget_cubit/steps_widget_state.dart';
 import 'package:flutter_recipe/feauters/recipes/presentation/screens/list_recipes_screen.dart';
-import 'package:flutter_recipe/feauters/recipes/presentation/widgets/bookmark_icon.dart';
 import 'package:flutter_recipe/feauters/recipes/presentation/widgets/header_widget.dart';
 import 'package:flutter_recipe/feauters/recipes/presentation/widgets/step_cook_widget.dart';
-import 'package:intl/intl.dart';
 
-import '../widgets/botom_app_bar_widget.dart';
+import '../widgets/bottom_app_bar_widget.dart';
 import '../widgets/comments.dart';
 
 class RecipeDetailsScreen extends StatelessWidget {
@@ -26,113 +20,56 @@ class RecipeDetailsScreen extends StatelessWidget {
     Recipe recipe = recipeArguments.recipe;
     String userId = recipeArguments.userId;
 
-    bool cooking = false;
-    var state = context.read<StepsWidgetCobit>().state;
-    if (state is StepsWidgetStateCooking) {
-      cooking = true;
-    } else {
-      cooking = false;
-    }
-    print('coocing=$cooking');
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: cooking ? Colors.deepPurple : null,
-        title: const Text('Рецепт'),
-        bottom: PreferredSize(
-            preferredSize: const Size.fromHeight(30),
-            child: BotomAppBarWidget()),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: ListView(
-          children: [
-            ///   BookmarkIcon(),
-            //Text(times),
-            HeaderWidget(recipe: recipe, userId: userId),
-            // header(recipe),
-            const SizedBox(height: 15),
-            ingredients(recipe),
-            const SizedBox(
-              height: 20,
+    return BlocConsumer<StepsWidgetCobit, StepsWidgetState>(
+        listener: (context, sate) {},
+        buildWhen: (previous, current) =>
+            !(previous is StepsWidgetStateCooking &&
+                current is StepsWidgetStateCooking),
+        builder: (context, state) {
+          return Scaffold(
+            appBar: AppBar(
+              backgroundColor: state is StepsWidgetStateCooking
+                  ? const Color.fromRGBO(46, 204, 113, 1)
+                  : null,
+              title: const Text('Рецепт'),
+              bottom: const PreferredSize(
+                  preferredSize: Size.fromHeight(30),
+                  child: BottomAppBarWidget()),
             ),
-            StepCookWidget(recipe: recipe),
-            const SizedBox(
-              height: 20,
+            body: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    HeaderWidget(recipe: recipe, userId: userId),
+                    const SizedBox(height: 15),
+                    ingredients(recipe),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    StepCookWidget(recipe: recipe),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    const Divider(
+                      thickness: 1,
+                      color: Color(0xFF797676),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    CommentsWidget(
+                      comments: recipe.comments,
+                      userId: userId,
+                      recipeId: recipe.id,
+                    ),
+                  ],
+                ),
+              ),
             ),
-            const Divider(
-              thickness: 1,
-              color: Color(0xFF797676),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            CommentsWidget(
-              comments: recipe.comments,
-              userId: userId,
-              recipeId: recipe.id,
-            ),
-          ],
-        ),
-      ),
-    );
+          );
+        });
   }
-}
-
-header(Recipe recipe) {
-  return Column(
-    children: [
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Expanded(
-            child: Text(recipe.name,
-                style:
-                    const TextStyle(fontSize: 24, fontWeight: FontWeight.w500)),
-          ),
-          IconButton(
-              icon: const Icon(Icons.favorite),
-              color: Colors.red,
-              onPressed: () {})
-        ],
-      ),
-      const SizedBox(height: 15),
-      Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-        const Icon(
-          Icons.access_time,
-          size: 20,
-        ),
-        const SizedBox(width: 15),
-        Expanded(
-            child: Text(
-          recipe.time,
-          style: const TextStyle(color: Color(0xFF2ECC71)),
-        ))
-      ]),
-      const SizedBox(height: 15),
-      SizedBox(
-        height: 220,
-        width: 396,
-        child: Stack(
-          children: [
-            SizedBox(
-                height: 220,
-                width: 396,
-                child: Image.asset(
-                  recipe.img,
-                  fit: BoxFit.fitWidth,
-                )),
-            const Align(
-                alignment: Alignment.bottomRight,
-                child: Padding(
-                  padding: EdgeInsets.only(bottom: 13),
-                  child: BookmarkIcon(),
-                )),
-          ],
-        ),
-      ),
-      //Image.network(recipe.img),
-    ],
-  );
 }
 
 ingredients(Recipe recipe) {
@@ -172,11 +109,6 @@ ingredients(Recipe recipe) {
 }
 
 PreferredSize botomAppBar(BuildContext context) {
-  // var state = context.watch<StepsWidgetCobit>().state;
-  // if (state is StepsWidgetStateCooking) {
-  //   int timeCookingSec = state.timeStepList.reduce((a, b) => a + b);
-  //   print('timeCookingSec=$timeCookingSec');
-  // }
   return PreferredSize(
     preferredSize: const Size.fromHeight(30),
     child: Padding(

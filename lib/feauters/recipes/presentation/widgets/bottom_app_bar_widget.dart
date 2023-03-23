@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 import '../bloc/steps_widget_cubit/steps_widget_cubit.dart';
 import '../bloc/steps_widget_cubit/steps_widget_state.dart';
 
-class BotomAppBarWidget extends StatelessWidget {
-  int timeCookingSec = 0;
-  bool cooking = false;
-  BotomAppBarWidget({super.key});
+class BottomAppBarWidget extends StatelessWidget {
+  const BottomAppBarWidget({super.key});
+
   @override
   Widget build(BuildContext context) {
+    int timeCookingSec = 0;
+    bool cooking = false;
+
     var state = context.watch<StepsWidgetCobit>().state;
     if (state is StepsWidgetStateCooking) {
       timeCookingSec = state.timeStepList.reduce((a, b) => a + b);

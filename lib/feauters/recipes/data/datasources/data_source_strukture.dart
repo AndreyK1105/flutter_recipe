@@ -1,6 +1,6 @@
 import '../../domain/entities/recipe.dart';
 
-class DataSourceStrukt {
+class DataSourceStrukture {
   List images = [
     'assets/images/recipe_losos.png',
     'assets/images/recipe_poke.png',

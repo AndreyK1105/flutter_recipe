@@ -36,17 +36,12 @@ class ListTileCastom extends StatelessWidget {
                   placeholder: (context, url) => const Padding(
                     padding: EdgeInsets.all(40.0),
                     child: CircularProgressIndicator(
-                      color: Colors.black,
+                      color: Color.fromARGB(255, 8, 148, 26),
                     ),
                   ),
                   errorWidget: (context, url, error) => const Icon(Icons.error),
                   fit: BoxFit.cover,
                 ),
-
-                //  Image.network(
-                //   img,
-                //   fit: BoxFit.cover,
-                // ),
               ),
               Container(
                 width: 16,
@@ -60,7 +55,6 @@ class ListTileCastom extends StatelessWidget {
                       title,
                       softWrap: true,
                       maxLines: 2,
-                      //textAlign: TextAlign.left,
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
                         fontSize: 22,
@@ -71,7 +65,6 @@ class ListTileCastom extends StatelessWidget {
                     Container(
                       height: 12,
                     ),
-
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
@@ -95,15 +88,8 @@ class ListTileCastom extends StatelessWidget {
                                 color: Color(0xFF2ECC71)),
                           ),
                         ),
-                        // Container(width: 12,)
                       ],
                     ),
-
-                    // Row(
-                    //   children: [
-                    //     Text(subtitle, overflow: TextOverflow.ellipsis,),
-                    // ],
-                    //  )
                   ],
                 ),
               )

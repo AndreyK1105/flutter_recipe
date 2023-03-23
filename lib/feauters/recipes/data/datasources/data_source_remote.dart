@@ -1,4 +1,3 @@
-import 'package:flutter_recipe/feauters/recipes/domain/entities/recipe_spoonac.dart';
 import 'package:flutter_recipe/feauters/recipes/presentation/bloc/comments_widget_bloc/comments_widget_cubit.dart';
 
 import '../../domain/entities/recipe.dart';
@@ -27,17 +26,9 @@ class DataSourceRemoteImpl implements DataSourceRemote {
   Future<List<Recipe>> getRecipeRemote() async {
     List<Recipe> list = [];
 
-    var searchMenuItems = await dio.get('http://80.87.198.104:3001/api/recipes/'
+    var searchMenuItems =
+        await dio.get('http://80.87.198.104:3001/api/recipes/');
 
-        //'https://api.spoonacular.com/food/menuItems/search?apiKey=f64ea6b1ea14465c801f25972db69cd1&query=pasta&number=5'
-
-        );
-
-//  'https://api.spoonacular.com/food/menuItems/search?apiKey=f64ea6b1ea14465c801f25972db69cd1&query=burger&number=20'
-//  'https://api.spoonacular.com/recipes/324694/analyzedInstructions'
-    // print('response.statusCode=${response.statusCode}');
-    //  print('response.data=${response.data}');
-    //throw UnimplementedError();
     if (searchMenuItems.statusCode == 200) {
       final recipes = searchMenuItems.data;
 
@@ -45,65 +36,8 @@ class DataSourceRemoteImpl implements DataSourceRemote {
           .map((recipe) => Recipe.fromJson(recipe))
           .toList();
       print('list.length${list.length}');
-/*
-      List<int> recipesId = (recipes['menuItems'] as List)
-          .map((e) => e['id'] as int)
-          .toList(); // берем id рецептов из запроса поиска рецепта.
-      List<RecipeSpoon> recipesSpoonac = [];
-      for (int id in recipesId) {
-        String idStr = id.toString();
-        var getAnalyzedRecipeInstructions = await dio.get(
-            //
-            'https://api.spoonacular.com/recipes/$idStr/analyzedInstructions?apiKey=f64ea6b1ea14465c801f25972db69cd1');
 
-        if (getAnalyzedRecipeInstructions.statusCode == 200) {
-          final recipeSteps = getAnalyzedRecipeInstructions.data;
-          List<Steps> steps = (recipeSteps[0]['steps'] as List)
-              .map((e) => Steps.fromJson(e))
-              .toList();
-
-          var getRecipeInformation = await dio.get(
-              'https://api.spoonacular.com/recipes/$idStr/information?apiKey=f64ea6b1ea14465c801f25972db69cd1&includeNutrition=false');
-
-          if (getRecipeInformation.statusCode == 200) {
-            var recipeInformation = getRecipeInformation.data;
-            //print(recipeInformation[0]);
-            recipesSpoonac.add(RecipeSpoon.fromJson(recipeInformation, steps)
-                //recipeInformation.map((e) => RecipeSpoon.fromJson(e, steps))
-                );
-
-            list.add(Recipe.fromRecipeSpoon(
-                RecipeSpoon.fromJson(recipeInformation, steps)));
-          } else {
-            print(
-                'getRecipeInformation.statusCode=${getRecipeInformation.statusCode}');
-          }
-          ;
-        } else {
-          print(
-              'getAnalyzedRecipeInstructions.statusCode=${getAnalyzedRecipeInstructions.statusCode}');
-          // return throw UnimplementedError();
-        }
-      }
-      */
       return list;
-      // List<Recipe> list = (recipes['menuItems'] as List)
-      //     .map((recipe) => Recipe.fromJson(recipe))
-      //     .toList();
-
-      // var responseAnalis = await dio.get(
-      //     'https://api.spoonacular.com/recipes/324694/analyzedInstructions?apiKey=f64ea6b1ea14465c801f25972db69cd1');
-      // final instructions = responseAnalis.data;
-      // //List<Steps> steps=[];
-      // //Map <String, dynamic> steps= recipes[''];
-      // List<Steps> stepsCook = [];
-
-      // stepsCook = (instructions[0]['steps'] as List)
-      //     .map((e) => Steps.fromJson(e))
-      //     .toList();
-      // print('lengh stepsCook=${stepsCook.length}');
-      // print('lengh stepsCook[0]=${stepsCook[0].step}');
-      // print(list[0]);
     } else {
       print('searchMenuItems.statusCode=${searchMenuItems.statusCode}');
       return throw UnimplementedError();
@@ -225,14 +159,6 @@ class DataSourceRemoteImpl implements DataSourceRemote {
 
     var respopnse = await dio
         .put('http://80.87.198.104:3001/api/recipes/$recipeId/', data: json);
-
-//         final formData = FormData.fromMap({
-//   'name': 'dio',
-//   'date': DateTime.now().toIso8601String(),
-//   'file': await MultipartFile.fromFile('./text.txt', ),
-
-// });
-// final response = await dio.post('/info', data: formData);
 
     if (respopnse.statusCode == 200) {
     } else {
