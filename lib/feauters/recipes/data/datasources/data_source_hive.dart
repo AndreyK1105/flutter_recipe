@@ -21,7 +21,7 @@ class DataSourceLocalHiveImpl implements DataSourceLocalHive {
   @override
   Future<List<Recipe>> getRecipe() async {
     List<Recipe> recipes = [];
-    print('get hive');
+    // print('get hive');
     var box = Hive.box<Recipe>('Recipes');
     int boxLenght = box.length;
     for (int i = 0; i < boxLenght; i++) {
@@ -34,7 +34,7 @@ class DataSourceLocalHiveImpl implements DataSourceLocalHive {
 
   @override
   Future<void> saveRecipe(List<Recipe> recipes) async {
-    print('save in Hive ${recipes.first.name}');
+    // print('save in Hive ${recipes.first.name}');
     //  await Hive.openBox<Recipe>('Recipes');
     var box = Hive.box<Recipe>('Recipes');
     await box.clear();
