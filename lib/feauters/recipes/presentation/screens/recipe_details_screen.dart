@@ -9,6 +9,7 @@ import 'package:flutter_recipe/feauters/recipes/presentation/widgets/step_cook_w
 
 import '../widgets/bottom_app_bar_widget.dart';
 import '../widgets/comments.dart';
+import '../widgets/gallery_widget.dart';
 
 class RecipeDetailsScreen extends StatelessWidget {
   const RecipeDetailsScreen({super.key});
@@ -42,6 +43,10 @@ class RecipeDetailsScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     HeaderWidget(recipe: recipe, userId: userId),
+                    const SizedBox(height: 15),
+                    GalleryWidget(
+                      recipeId: recipe.id,
+                    ),
                     const SizedBox(height: 15),
                     ingredients(recipe),
                     const SizedBox(

@@ -8,16 +8,15 @@ import 'package:intl/intl.dart';
 
 import '../../domain/entities/recipe.dart';
 
-class StepCookWidget extends StatelessWidget {
+class StepCookWidget extends StatefulWidget {
   final Recipe recipe;
 
-  StepCookWidget({required this.recipe, super.key}) {
-    for (int i = 0; i < recipe.cook.length; i++) {
-      timeCookingSec = timeCookingSec + recipe.cook[i].timeStepSec;
-    }
-    myDuration = Duration(seconds: timeCookingSec);
-  }
+  const StepCookWidget({required this.recipe, super.key});
+  @override
+  State<StatefulWidget> createState() => _StepCookWidgetState();
+}
 
+class _StepCookWidgetState extends State<StepCookWidget> {
   List<bool> listCheckboxOn = [];
   Duration myDuration = const Duration(seconds: 0);
   int timeCookingSec = 0;
@@ -29,12 +28,28 @@ class StepCookWidget extends StatelessWidget {
   Timer? countdownTimer;
 
   @override
-  Widget build(BuildContext context) {
-    if (context.watch<StepsWidgetCobit>().state is StepsWidgetStateCooking) {
-      cookingProcess = true;
-    } else {
-      cookingProcess = false;
+  void initState() {
+    super.initState();
+
+    for (int i = 0; i < widget.recipe.cook.length; i++) {
+      timeCookingSec = timeCookingSec + widget.recipe.cook[i].timeStepSec;
     }
+    myDuration = Duration(seconds: timeCookingSec);
+  }
+
+  @override
+  void deactivate() {
+    context.read<StepsWidgetCobit>().stopSteps();
+    super.deactivate();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // if (context.watch<StepsWidgetCobit>().state is StepsWidgetStateCooking) {
+    //   cookingProcess = true;
+    // } else {
+    //   cookingProcess = false;
+    // }
 
     return Column(children: [
       const Align(
@@ -48,8 +63,8 @@ class StepCookWidget extends StatelessWidget {
         height: 20,
       ),
       Column(
-          children: List<Widget>.generate(recipe.cook.length, (index) {
-        var state = context.watch<StepsWidgetCobit>().state;
+          children: List<Widget>.generate(widget.recipe.cook.length, (index) {
+        var state = context.read<StepsWidgetCobit>().state;
         bool checkboxOn = false;
 
         if (state is StepsWidgetStateCooking) {
@@ -92,7 +107,7 @@ class StepCookWidget extends StatelessWidget {
                       ),
                       Expanded(
                           child: Text(
-                        recipe.cook[index].step.toString(),
+                        widget.recipe.cook[index].step.toString(),
                         style: const TextStyle(
                             color: Color(0xFF797676),
                             fontSize: 14,
@@ -105,37 +120,34 @@ class StepCookWidget extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           cookingProcess
-                              ? Checkbox(
-                                  value: checkboxOn,
-                                  onChanged: curentStep == index
-                                      ? (bool? newValue) {
-                                          context
-                                              .read<StepsWidgetCobit>()
-                                              .stepEnd(
-                                                  curentStep,
-                                                  listCheckboxOn,
-                                                  timeStepList,
-                                                  recipe.cook);
-                                        }
-                                      : null,
+                              ? MyCheckBox(
+                                  index: index,
+                                  curentStep: curentStep,
+                                  checkboxOn: checkboxOn,
+                                  listCheckboxOn: listCheckboxOn,
+                                  timeStepList: timeStepList,
+                                  cook: widget.recipe.cook,
                                 )
+                              //  Checkbox(
+                              //     value: checkboxOn,
+                              //     onChanged: curentStep == index
+                              //         ? (bool? newValue) {
+                              //             context
+                              //                 .read<StepsWidgetCobit>()
+                              //                 .stepEnd(
+                              //                     curentStep,
+                              //                     listCheckboxOn,
+                              //                     timeStepList,
+                              //                     recipe.cook);
+                              //           }
+                              //         : null,
+                              //   )
                               : const SizedBox(
                                   height: 20,
                                 ),
-                          Text(
-                            DateFormat.ms().format(DateTime(
-                                0,
-                                0,
-                                0,
-                                0,
-                                0,
-                                state is StepsWidgetStateCooking
-                                    ? timeCookingSec
-                                    : recipe.cook[index].timeStepSec)),
-                            style: const TextStyle(
-                                color: Color(0xFF797676),
-                                fontSize: 13,
-                                fontWeight: FontWeight.w700),
+                          TimeStepWidget(
+                            index: index,
+                            recipe: widget.recipe,
                           ),
                         ],
                       ),
@@ -154,63 +166,171 @@ class StepCookWidget extends StatelessWidget {
       const SizedBox(
         height: 20,
       ),
-      ButtonCooking(
-        recipe: recipe,
+      InkWell(
+        splashColor: Colors.amber,
+        onTap: () {
+          if (!cookingProcess) {
+            cookingProcess = true;
+            context.read<StepsWidgetCobit>().startCoocking(widget.recipe.cook);
+            setState(() {});
+            //context.o
+          } else {
+            cookingProcess = false;
+            context.read<StepsWidgetCobit>().stopSteps();
+            setState(() {});
+          }
+        },
+        child: Container(
+          width: 232,
+          height: 48,
+          decoration: BoxDecoration(
+              color: const Color(0xFF165932),
+              borderRadius: BorderRadius.circular(24)),
+          child: Center(
+              child: context.read<StepsWidgetCobit>().state
+                      is StepsWidgetStateCooking
+                  ? const Text('Закончить готовить',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ))
+                  : const Text('Начать готовить',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ))),
+        ),
       ),
     ]);
   }
 }
 
-class ButtonCooking extends StatefulWidget {
-  const ButtonCooking({required this.recipe, super.key});
-  final Recipe recipe;
+class MyCheckBox extends StatefulWidget {
+  const MyCheckBox(
+      {required this.index,
+      required this.curentStep,
+      required this.checkboxOn,
+      required this.listCheckboxOn,
+      required this.timeStepList,
+      required this.cook,
+      super.key});
+  final int index;
+  final int curentStep;
+  final bool checkboxOn;
+  final List<bool> listCheckboxOn;
+  final List<int> timeStepList;
+  final List<Cook> cook;
   @override
-  State<ButtonCooking> createState() => _ButtonCookingState();
+  State<MyCheckBox> createState() => _MyCheckBoxState();
 }
 
-class _ButtonCookingState extends State<ButtonCooking> {
+class _MyCheckBoxState extends State<MyCheckBox>
+    with SingleTickerProviderStateMixin {
+  late Animation<double> animation;
+  late AnimationController controller;
+  late bool checkboxOn;
+  late int curentStep;
   @override
-  void deactivate() {
-    context.read<StepsWidgetCobit>().stopSteps();
-    super.deactivate();
+  void initState() {
+    super.initState();
+    curentStep = widget.curentStep;
+    checkboxOn = widget.checkboxOn;
+    bool controllerForward = true;
+    controller = AnimationController(
+        duration: const Duration(milliseconds: 300), vsync: this);
+    animation = Tween<double>(begin: 1, end: 1.5).animate(controller)
+      ..addListener(() {
+        setState(() {});
+      })
+      ..addStatusListener((status) {
+        if (status == AnimationStatus.completed && controllerForward == true) {
+          controllerForward = false;
+          controller.reverse();
+        }
+        // else if (status == AnimationStatus.forward) {
+        //   controller.stop();
+        // }
+      });
+    // controller.isCompleted ? controller.reverse() : null;
+    // controller.forward();
   }
 
   @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  // double _size = 1.0;
+  // bool _large = false;
+
+  // void _updateSize() {
+  //   _size = _large ? 1.0 : 1.5;
+  //   _large = !_large;
+  // }
+
+  @override
   Widget build(BuildContext context) {
-    return InkWell(
-      splashColor: Colors.amber,
-      onTap: () {
-        if (context.read<StepsWidgetCobit>().state is StepsWidgetStateEmpty) {
-          //cookingProcess = true;
-          context.read<StepsWidgetCobit>().startCoocking(widget.recipe.cook);
-          //context.o
-        } else {
-          //cookingProcess = false;
-          context.read<StepsWidgetCobit>().stopSteps();
+    return BlocListener<StepsWidgetCobit, StepsWidgetState>(
+      listener: (context, state) {
+        if (state is StepsWidgetStateCooking) {
+          if (curentStep != state.curentStep) {
+            curentStep = state.curentStep;
+          }
+
+          if (state.checkboxOn[widget.index]) {
+            checkboxOn = true;
+            setState(() {
+              //controller.forward();
+            });
+          }
         }
       },
-      child: Container(
-        width: 232,
-        height: 48,
-        decoration: BoxDecoration(
-            color: const Color(0xFF165932),
-            borderRadius: BorderRadius.circular(24)),
-        child: Center(
-            child: context.read<StepsWidgetCobit>().state
-                    is StepsWidgetStateCooking
-                ? const Text('Закончить готовить',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                    ))
-                : const Text('Начать готовить',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                    ))),
-      ),
+      child: Transform.scale(
+          scale: animation.value,
+          child: Checkbox(
+              value: checkboxOn,
+              onChanged: (bool? newValue) {
+                if (curentStep == widget.index) {
+                  // print('curentStep $curentStep === index ${widget.index}');
+                  checkboxOn = true;
+                  setState(() {
+                    controller.forward();
+                    context.read<StepsWidgetCobit>().stepEnd(
+                        curentStep,
+                        widget.listCheckboxOn,
+                        widget.timeStepList,
+                        widget.cook);
+                  });
+                }
+              })),
+    );
+  }
+}
+
+class TimeStepWidget extends StatelessWidget {
+  final int index;
+  final Recipe recipe;
+
+  const TimeStepWidget({required this.index, required this.recipe, super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    var state = context.watch<StepsWidgetCobit>().state;
+    return Text(
+      DateFormat.ms().format(DateTime(
+          0,
+          0,
+          0,
+          0,
+          0,
+          state is StepsWidgetStateCooking
+              ? state.timeStepList[index]
+              : recipe.cook[index].timeStepSec)),
+      style: const TextStyle(
+          color: Color(0xFF797676), fontSize: 13, fontWeight: FontWeight.w700),
     );
   }
 }

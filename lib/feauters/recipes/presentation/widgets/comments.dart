@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_recipe/feauters/recipes/presentation/bloc/comments_widget_bloc/comments_widget_cubit.dart';
 import 'package:flutter_recipe/feauters/recipes/presentation/bloc/comments_widget_bloc/comments_widget_state.dart';
+import 'package:full_screen_image/full_screen_image.dart';
 
 import '../../domain/entities/recipe.dart';
 import 'creat_comment.dart';
@@ -84,30 +85,35 @@ class CommentsWidget extends StatelessWidget {
                                       ? SizedBox(
                                           width: 250,
                                           //height: 315,
-                                          child: CachedNetworkImage(
-                                            imageUrl:
-                                                commentsList[index].imgComment,
-                                            placeholder: (context, url) =>
-                                                const Padding(
-                                              padding: EdgeInsets.all(40.0),
-                                              child: Center(
-                                                child: SizedBox(
-                                                  width: 60,
-                                                  height: 60,
-                                                  child:
-                                                      CircularProgressIndicator(
-                                                    color: Color.fromARGB(
-                                                        255, 8, 117, 26),
+                                          child: FullScreenWidget(
+                                            disposeLevel: DisposeLevel.Medium,
+                                            child: Center(
+                                              child: CachedNetworkImage(
+                                                imageUrl: commentsList[index]
+                                                    .imgComment,
+                                                placeholder: (context, url) =>
+                                                    const Padding(
+                                                  padding: EdgeInsets.all(40.0),
+                                                  child: Center(
+                                                    child: SizedBox(
+                                                      width: 60,
+                                                      height: 60,
+                                                      child:
+                                                          CircularProgressIndicator(
+                                                        color: Color.fromARGB(
+                                                            255, 8, 117, 26),
+                                                      ),
+                                                    ),
                                                   ),
                                                 ),
+                                                errorWidget:
+                                                    (context, url, error) =>
+                                                        const Icon(Icons.error),
+                                                fit: BoxFit.cover,
+
+                                                // fit: BoxFit.contain,
                                               ),
                                             ),
-                                            errorWidget:
-                                                (context, url, error) =>
-                                                    const Icon(Icons.error),
-                                            fit: BoxFit.cover,
-
-                                            // fit: BoxFit.contain,
                                           ),
                                         )
                                       : const SizedBox(
