@@ -1,87 +1,98 @@
-import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_recipe/feauters/recipes/data/datasources/data_sourse_hive.dart';
+import 'package:flutter_recipe/feauters/recipes/data/repository/recipe_repository_impl.dart';
+import 'package:flutter_recipe/feauters/recipes/presentation/bloc/comments_widget_bloc/comments_widget_cubit.dart';
+import 'package:flutter_recipe/feauters/recipes/presentation/bloc/header_widget_cubit/header_widget_cubit.dart';
 import 'package:flutter_recipe/feauters/recipes/presentation/bloc/list_recipe_cubit/list_recipe_cubit.dart';
-import 'package:hive/hive.dart';
-import 'feauters/recipes/data/datasources/data_source_strukt.dart';
-import 'feauters/recipes/data/repository/repository_local.dart';
-import 'package:path_provider/path_provider.dart' as path_provider;
+import 'package:flutter_recipe/feauters/recipes/presentation/bloc/steps_widget_cubit/steps_widget_cubit.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'feauters/recipes/data/datasources/data_source_file.dart';
+import 'feauters/recipes/data/datasources/data_source_hive.dart';
+import 'feauters/recipes/data/datasources/data_source_remote.dart';
 
 import 'feauters/recipes/domain/entities/recipe.dart';
-import 'feauters/recipes/presentation/screens/listRecipe.dart';
-import 'feauters/recipes/presentation/screens/recipe_card.dart';
-import 'feauters/recipes/presentation/screens/splash.dart';
+import 'feauters/recipes/domain/entities/user.dart';
+import 'feauters/recipes/presentation/bloc/steps_widget_cubit/steps_widget_state.dart';
+import 'feauters/recipes/presentation/screens/list_recipes_screen.dart';
+import 'feauters/recipes/presentation/screens/recipe_details_screen.dart';
+import 'feauters/recipes/presentation/screens/splash_screen.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
 
-  // ignore: non_constant_identifier_names
-  final AppDir= await path_provider.getApplicationDocumentsDirectory();
-  Hive.init(AppDir.path);
-  Hive.registerAdapter(RecipeAdapter());
-  Hive.registerAdapter(IngredientAdapter());
-  Hive.registerAdapter(CookAdapter()); 
+  await Hive.initFlutter();
+
+  Hive.registerAdapter<Ingredient>(IngredientAdapter());
+  Hive.registerAdapter<Cook>(CookAdapter());
+  Hive.registerAdapter<Comment>(CommentAdapter());
+  Hive.registerAdapter<User>(UserAdapter());
+  Hive.registerAdapter<Recipe>(RecipeAdapter());
   await Hive.openBox<Recipe>('Recipes');
- 
-  runApp( MyApp());
+
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-   const MyApp({super.key});
+  const MyApp({super.key});
 
-  // final routerDelegat = BeamerDelegate(
-  //   initialPath: '/',
-  //   locationBuilder: RoutesLocationBuilder( 
-  //     routes:{
-  //       '*':(context, state, data)=> const ScaffoldWithBottomNavBar()
-  //     },
-  //      ),
-  //      );
-
- 
   @override
   Widget build(BuildContext context) {
-
-    return MultiBlocProvider (
+    return MultiBlocProvider(
       providers: [
         BlocProvider<ListRecipeCubit>(
-          create: (_)=> ListRecipeCubit(recipeRepository: 
-          
-          //RecipeRepositoryRemote(dataSourseRemote: DataSourseRemoteImpl())
-
-          RecipeRepositoryLocal(dataSourseLocalHive: DataSourseLocalHiveImpl() )
-
-
-
-          
-          )..getRecipe(), )
+          create: (_) => ListRecipeCubit(
+            recipeRepositoryImpl: RecipeRepositoryImpl(
+              dataSourseLocalHive: DataSourceLocalHiveImpl(),
+              dataSourseRemote: DataSourceRemoteImpl(),
+              dataSourseFile:
+                  DataSourseFile(pathFile: 'assets/file/recipes_json.json'),
+            ),
+          )..getRecipe(),
+        ),
+        BlocProvider<HeaderWidgetCubit>(
+            create: (_) => HeaderWidgetCubit(
+                    recipeRepositoryImpl: RecipeRepositoryImpl(
+                  dataSourseFile:
+                      DataSourseFile(pathFile: 'assets/file/recipes_json.json'),
+                  dataSourseLocalHive: DataSourceLocalHiveImpl(),
+                  dataSourseRemote: DataSourceRemoteImpl(),
+                ))),
+        BlocProvider<CommentsWidgetCubit>(
+            create: (_) => CommentsWidgetCubit(
+                    recipeRepositoryImpl: RecipeRepositoryImpl(
+                  dataSourseFile:
+                      DataSourseFile(pathFile: 'assets/file/recipes_json.json'),
+                  dataSourseLocalHive: DataSourceLocalHiveImpl(),
+                  dataSourseRemote: DataSourceRemoteImpl(),
+                ))),
+        BlocProvider<StepsWidgetCobit>(
+            create: (_) => StepsWidgetCobit(StepsWidgetStateEmpty()))
       ],
       child: MaterialApp(
         title: 'My recipe',
         theme: ThemeData(
-      
-        colorScheme: ColorScheme.light(primary: Colors.white, onPrimary: Colors.black),
-        //  primarySwatch: Colors.green ,
-        primaryColor: Colors.white,
+          colorScheme: const ColorScheme.light(
+              primary: Colors.white,
+              onPrimary: Color.fromARGB(239, 15, 15, 15)),
+          //  primarySwatch: Colors.green ,
+          primaryColor: Colors.white,
         ),
-       
-       // routeInformationParser: BeamerParser(),
+
+        // routeInformationParser: BeamerParser(),
         //  routerDelegate: routerDelegat,
         // backButtonDispatcher: BeamerBackButtonDispatcher(delegate: routerDelegat,),
 
+        initialRoute: '/',
+        routes: {
+          '/': (context) => const SplashScreen(),
+          '/listRecipe': (context) => ListRecipesScreen(),
+          '/recipeCard': (context) => const RecipeDetailsScreen()
+        },
 
-       initialRoute: '/',
-       routes: {
-        '/':(context) => const Splash(),
-        '/listRecipe':(context) => ListRecipe(),
-        '/recipeCard':(context) => RecipeCard()
-       },
-        
-       //home:  const Splash()
-        
+        //home:  const Splash()
+
         //const MyHomePage(title: 'Flutter Demo Home Page'),
       ),
     );
   }
 }
-

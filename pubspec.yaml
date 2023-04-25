@@ -35,15 +35,18 @@ dependencies:
   hive: ^2.2.3
   path_provider: ^2.0.11
   hive_flutter: ^1.1.0
-
-  beamer: ^1.5.3
+ 
+  image_picker: ^0.8.6+3
+  intl: ^0.18.0
+  cached_network_image: ^3.2.3
+  connectivity_plus: ^3.0.3
+  
   flutter:
     sdk: flutter
-
-
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
+  rive: ^0.10.1
 
 dev_dependencies:
   flutter_test:
@@ -88,6 +91,12 @@ flutter:
     - assets/icons_png/icon_user_black.png
     - assets/icons_png/icon_user_green.png
     - assets/icons_png/icons8-изображение-96 1.png
+    - assets/file/recipes_json.json
+    - assets/rive/light-like.riv
+    - assets/rive/new_file1.riv
+    - assets/rive/little_machine.riv
+    - assets/rive/off_road_car.riv
+
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
