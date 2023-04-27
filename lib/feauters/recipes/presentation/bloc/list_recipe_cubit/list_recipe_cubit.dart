@@ -25,6 +25,7 @@ class ListRecipeCubit extends Cubit<ListRecipeState> {
       final recipes = await recipeRepositoryImpl.getRecipes();
       await recipeRepositoryImpl.dataSourseLocalHive.initHive();
       await recipeRepositoryImpl.dataSourseLocalHive.saveRecipe(recipes);
+      
       //  print('recipi in cubit save hive${recipes.length}');
       emit(ListRecipeLoaded(list: recipes));
     } else {

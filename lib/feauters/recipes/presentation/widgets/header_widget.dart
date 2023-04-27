@@ -4,15 +4,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_recipe/feauters/recipes/data/datasources/data_source_remote.dart';
 import 'package:flutter_recipe/feauters/recipes/domain/entities/recipe.dart';
+import 'package:rive/rive.dart';
 import '../bloc/header_widget_cubit/header_widget_cubit.dart';
 import '../bloc/header_widget_cubit/header_widget_state.dart';
+import '../bloc/like_ikon/like_ikon_cubit.dart';
 import 'bookmark_icon.dart';
+import 'like_icon.dart';
 
 class HeaderWidget extends StatefulWidget {
+  final List<Recipe> recipes;
   final Recipe recipe;
   final String userId;
   const HeaderWidget({
     super.key,
+    required this.recipes,
     required this.recipe,
     required this.userId,
   });
@@ -26,7 +31,29 @@ class _HeaderWidgetState extends State<HeaderWidget> {
 
   DataSourceRemoteImpl dataSourceRemoteImpl = DataSourceRemoteImpl();
 
-  @override
+  SMIInput<bool>? _like;
+
+  void _onInit(Artboard art) {
+    final controller =
+        StateMachineController.fromArtboard(art, 'State Machine 1');
+    //  print('controller ${controller}');
+    art.addController(controller!);
+    _like = controller.findInput<bool>('Like') as SMIBool;
+  }
+
+  // void _changeLike() {
+  //   if (_like?.value == false) {
+  //     _like?.value = true;
+  //   } else {
+  //     _like?.value = false;
+  //   }
+  // }
+// Future <void> changeFavorite() async{
+
+//  var d= await  context
+//                     .read<HeaderWidgetCubit>()
+//                     .changeFavorite(widget.recipe.id, widget.userId);
+// }
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -59,21 +86,58 @@ class _HeaderWidgetState extends State<HeaderWidget> {
 
             // ***Rive animate***
 
-            IconButton(
-                icon: const Icon(Icons.favorite),
-                color: (context.watch<HeaderWidgetCubit>().state
-                        is HeaderWidgetStateLike)
-                    ? Colors.red
-                    : Colors.black87,
-                onPressed: () async {
-                  context
-                      .read<HeaderWidgetCubit>()
-                      .changeFavorite(widget.recipe.id, widget.userId);
+            GestureDetector(
+              onTap: () async {
+                await context
+                    .read<HeaderWidgetCubit>()
+                    .changeFavorite(widget.recipe.id, widget.userId);
 
-                  {
-                    isFavorite.value = !isFavorite.value;
-                  }
-                })
+                context
+                    .read<LikeIkonCubit>()
+                    .loadLikes(widget.recipes, widget.userId);
+              },
+              child: LikeIkon(
+                recipeId: widget.recipe.id,
+                userId: widget.userId,
+              ),
+            ),
+
+            // Builder(builder: (context) {
+            //   bool _isLike;
+            //   (context.watch<HeaderWidgetCubit>().state
+            //           is HeaderWidgetStateLike)
+            //       ? _like?.value = true
+            //       : _like?.value = false;
+            //   return SizedBox(
+            //     height: 50,
+            //     width: 50,
+            //     child: GestureDetector(
+            //       child: RiveAnimation.asset(
+            //         'assets/rive/heart.riv',
+            //         onInit: _onInit,
+            //       ),
+            //       onTap: () => context
+            //           .read<HeaderWidgetCubit>()
+            //           .changeFavorite(widget.recipe.id, widget.userId),
+            //     ),
+            //   );
+            // }),
+
+            // IconButton(
+            //     icon: const Icon(Icons.favorite),
+            //     color: (context.watch<HeaderWidgetCubit>().state
+            //             is HeaderWidgetStateLike)
+            //         ? Colors.red
+            //         : Colors.black87,
+            //     onPressed: () async {
+            //       context
+            //           .read<HeaderWidgetCubit>()
+            //           .changeFavorite(widget.recipe.id, widget.userId);
+
+            //       {
+            //         isFavorite.value = !isFavorite.value;
+            //       }
+            //     })
           ],
         ),
         const SizedBox(height: 15),

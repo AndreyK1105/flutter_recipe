@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_recipe/feauters/recipes/presentation/bloc/like_ikon/like_ikon_cubit.dart';
 import 'package:flutter_recipe/feauters/recipes/presentation/bloc/list_recipe_cubit/list_recipe_cubit.dart';
 import 'package:flutter_recipe/feauters/recipes/presentation/bloc/list_recipe_cubit/list_recipe_state.dart';
 
@@ -24,6 +25,10 @@ class ListRecipesScreen extends StatelessWidget {
             if (state is ListRecipeLoaded) {
               recipes = state.list;
 
+              context.read<LikeIkonCubit>().loadLikes(recipes, userId);
+              // print(
+              //     'ListRecipesScreen  stste=== ${context.read<LikeIkonCubit>().state}');
+
               return ListView.builder(
                   // physics:const ScrollPhysics(parent:BouncingScrollPhysics() ) ,
                   physics: const BouncingScrollPhysics(),
@@ -33,6 +38,9 @@ class ListRecipesScreen extends StatelessWidget {
                       padding: const EdgeInsets.fromLTRB(16.0, 0, 16, 0),
                       child: GestureDetector(
                           child: ListTileCastom(
+                              recipes: recipes,
+                              recipeId: recipes[index].id,
+                              userId: userId,
                               index: index,
                               title: recipes[index].name,
                               subtitle: recipes[index].time,
@@ -42,7 +50,9 @@ class ListRecipesScreen extends StatelessWidget {
                                     .read<HeaderWidgetCubit>()
                                     .getLikeUsersId(recipes[index].id, userId),
                                 recipeArguments = RecipeArguments(
-                                    recipe: recipes[index], userId: userId),
+                                    recipes: recipes,
+                                    recipe: recipes[index],
+                                    userId: userId),
                                 Navigator.pushNamed(context, '/recipeCard',
                                     arguments: recipeArguments),
                               }),
@@ -61,7 +71,9 @@ class ListRecipesScreen extends StatelessWidget {
 }
 
 class RecipeArguments {
+  List<Recipe> recipes;
   Recipe recipe;
   String userId;
-  RecipeArguments({required this.recipe, required this.userId});
+  RecipeArguments(
+      {required this.recipes, required this.recipe, required this.userId});
 }

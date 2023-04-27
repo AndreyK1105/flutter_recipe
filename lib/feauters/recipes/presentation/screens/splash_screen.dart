@@ -122,9 +122,9 @@ class SplashScreen extends StatelessWidget {
 
   void pushPage(context) async {
     await {
-      print('await'),
+      //  print('await'),
       const Duration(seconds: 5),
-      print('await'),
+      //print('await'),
       Navigator.of(context).push(_createRoute())
     };
   }
@@ -133,7 +133,7 @@ class SplashScreen extends StatelessWidget {
 Route _createRoute() {
   return PageRouteBuilder(
     pageBuilder: (context, animation, secondaryAnimation) =>
-        ListRecipesScreen(),
+        const ListRecipesScreen(),
     transitionDuration: const Duration(milliseconds: 4000),
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
       const begin = Offset(0.0, 1.0);
