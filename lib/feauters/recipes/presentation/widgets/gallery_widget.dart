@@ -122,6 +122,7 @@ class GalleryExampleItemThumbnail extends StatelessWidget {
 
 class GalleryPhotoViewWrapper extends StatefulWidget {
   GalleryPhotoViewWrapper({
+    super.key,
     this.loadingBuilder,
     this.backgroundDecoration,
     this.minScale,

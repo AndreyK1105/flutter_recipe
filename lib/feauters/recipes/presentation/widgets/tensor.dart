@@ -15,7 +15,7 @@ class _TensorState extends State<Tensor> {
   //final _image = widget.file;
   double _imageHeight = 0;
   double _imageWidth = 0;
-  List _recognitions = [];
+  final List _recognitions = [];
   //bool _busy = false;
   List<dynamic> detect = [];
 
@@ -33,9 +33,9 @@ class _TensorState extends State<Tensor> {
   }
 
   Future loadModel() async {
-    print('resloadModel........');
+    //print('resloadModel........');
     Tflite.close();
-    print('Tflite.close .......');
+    // print('Tflite.close .......');
     String? res = await Tflite.loadModel(
       model: //'assets/exaples/yolov2_tiny.tflite',
           'assets/detect.tflite',
@@ -44,7 +44,7 @@ class _TensorState extends State<Tensor> {
       // labels: 'assets/exaples/yolov2_tiny.txt',
       //useGpuDelegate: false,
     );
-    print('res========$res');
+    // print('res========$res');
   }
 
   List<Widget> renderBoxes(Size screen) {
@@ -53,7 +53,7 @@ class _TensorState extends State<Tensor> {
 
     double factorX = screen.width;
     double factorY = _imageHeight / _imageWidth * screen.width;
-    Color blue = Color.fromRGBO(37, 213, 253, 1.0);
+    Color blue = const Color.fromRGBO(37, 213, 253, 1.0);
     return _recognitions.map((re) {
       return Positioned(
         left: re["rect"]["x"] * factorX,
@@ -62,7 +62,7 @@ class _TensorState extends State<Tensor> {
         height: re["rect"]["h"] * factorY,
         child: Container(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(8.0)),
+            borderRadius: const BorderRadius.all(Radius.circular(8.0)),
             border: Border.all(
               color: blue,
               width: 2,
@@ -86,7 +86,7 @@ class _TensorState extends State<Tensor> {
     File _image = widget.file;
 
     Size size = MediaQuery.of(context).size;
-    print('MediaQuery()---------------$size-----');
+    // print('MediaQuery()---------------$size-----');
     List<Widget> stackChildren = [];
     FileImage(_image)
         .resolve(const ImageConfiguration())
@@ -94,7 +94,7 @@ class _TensorState extends State<Tensor> {
       setState(() {
         _imageHeight = info.image.height.toDouble();
         _imageWidth = info.image.width.toDouble();
-        print('_imageHeight=====$_imageHeight');
+        //   print('_imageHeight=====$_imageHeight');
       });
     }));
     // setState(() {

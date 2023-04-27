@@ -20,6 +20,7 @@ class RecipeDetailsScreen extends StatelessWidget {
         ModalRoute.of(context)!.settings.arguments as RecipeArguments;
     Recipe recipe = recipeArguments.recipe;
     String userId = recipeArguments.userId;
+    List<Recipe> recipes = recipeArguments.recipes;
 
     return BlocConsumer<StepsWidgetCobit, StepsWidgetState>(
         listener: (context, sate) {},
@@ -42,7 +43,8 @@ class RecipeDetailsScreen extends StatelessWidget {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    HeaderWidget(recipe: recipe, userId: userId),
+                    HeaderWidget(
+                        recipes: recipes, recipe: recipe, userId: userId),
                     const SizedBox(height: 15),
                     GalleryWidget(
                       recipeId: recipe.id,

@@ -11,7 +11,7 @@ class GallerySourceHive {
     //   await Hive.openBox<GalleryItem>(recipeId);
     // }
     await Hive.openBox<GalleryItem>(recipeId);
-    print('get gallery');
+    // print('get gallery');
     var box = Hive.box<GalleryItem>(recipeId);
     int boxLenght = box.length;
     // box.clear();
@@ -23,17 +23,13 @@ class GallerySourceHive {
     return gallery;
   }
 
-
-
-
-
   Future<void> addGalleryItem(GalleryItem galleryItem, String recipeId) async {
     // if (!Hive.box<GalleryItem>(recipeId).isOpen) {
     //   await Hive.openBox<GalleryItem>(recipeId);
     // }
 
     var box = Hive.box<GalleryItem>(recipeId);
-    print('add gallery${box.name}');
+    // print('add gallery${box.name}');
     // await box.clear();
 
     await box.add(galleryItem);

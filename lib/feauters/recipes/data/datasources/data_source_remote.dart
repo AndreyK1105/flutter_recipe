@@ -35,11 +35,11 @@ class DataSourceRemoteImpl implements DataSourceRemote {
       list = (recipes['data'] as List)
           .map((recipe) => Recipe.fromJson(recipe))
           .toList();
-      print('list.length${list.length}');
+      // print('list.length${list.length}');
 
       return list;
     } else {
-      print('searchMenuItems.statusCode=${searchMenuItems.statusCode}');
+      // print('searchMenuItems.statusCode=${searchMenuItems.statusCode}');
       return throw UnimplementedError();
     }
     ;
@@ -50,9 +50,9 @@ class DataSourceRemoteImpl implements DataSourceRemote {
     Recipe recipe = await getRecipe(recipeId);
     int aggregateLikes = recipe.aggregateLikes;
     List<String> likeUsersId = recipe.likeUsersId;
-    print('name=${recipe.name}');
-    print('aggregateLikes=$aggregateLikes');
-    print('likeUsersId=${likeUsersId.length}');
+    // print('name=${recipe.name}');
+    // print('aggregateLikes=$aggregateLikes');
+    // print('likeUsersId=${likeUsersId.length}');
     return aggregateLikes;
   }
 
@@ -102,7 +102,7 @@ class DataSourceRemoteImpl implements DataSourceRemote {
           {'recipeId': listLikeRecipes[j]}
       ]
     };
-    print(json);
+    // print(json);
     final respopnse = await dio
         .put('http://80.87.198.104:3001/api/recipes/$recipeId/', data: json);
     if (respopnse.statusCode == 200) {
@@ -126,7 +126,7 @@ class DataSourceRemoteImpl implements DataSourceRemote {
 
     if (img != '') {
       String extension = '.${img.split('.').last}';
-      print('extension img=$extension');
+      // print('extension img=$extension');
       String filename =
           (DateTime.now().millisecondsSinceEpoch.toString()) + extension;
       final formData = FormData.fromMap({
@@ -140,22 +140,22 @@ class DataSourceRemoteImpl implements DataSourceRemote {
     }
 
     Recipe recipe = await getRecipe(recipeId);
-    print('recipe id= ${recipe.id}');
+    //print('recipe id= ${recipe.id}');
     Comment newComment = Comment(user: userId, comment: comment, img: imgServ);
-    print('newComment.comment-${newComment.comment}');
+    //print('newComment.comment-${newComment.comment}');
     List<Comment> comments = recipe.comments;
-    print('comments.lenght-${comments.length}');
+    //print('comments.lenght-${comments.length}');
     comments.add(newComment);
-    print('comments.lenght-${comments.length}');
+    //print('comments.lenght-${comments.length}');
     //String js = jsonEncode(comments);
     List<Map<String, dynamic>> listMap = [];
     for (int i = 0; i < comments.length; i++) {
       listMap.add((Comment.toJson(comments[i])));
     }
-    print('js=$listMap');
+    // print('js=$listMap');
     Map<String, dynamic> json = {'comments': listMap};
 
-    print('json=$json');
+    //print('json=$json');
 
     var respopnse = await dio
         .put('http://80.87.198.104:3001/api/recipes/$recipeId/', data: json);
@@ -182,7 +182,7 @@ class DataSourceRemoteImpl implements DataSourceRemote {
   @override
   Future<List<CommentsList>> getComments(String recipeId) async {
     Recipe recipe = await getRecipe(recipeId);
-    print(recipeId);
+    //print(recipeId);
     List<CommentsList> commentsList = [];
     List<Comment> comments = recipe.comments;
 

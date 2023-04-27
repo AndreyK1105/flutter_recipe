@@ -37,7 +37,8 @@ class HeaderWidgetCubit extends Cubit<HeaderWidgetState> {
     }
   }
 
-  void changeFavorite(String recipeId, String userId) async {
+  Future<void> changeFavorite(String recipeId, String userId) async {
+    emit(HeaderWidgetStateLoading());
     await recipeRepositoryImpl.changeLikeCurentUser(recipeId, userId);
 
     getLikeUsersId(recipeId, userId);

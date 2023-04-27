@@ -7,13 +7,17 @@ import 'package:flutter_recipe/feauters/recipes/domain/entities/recipe.dart';
 import 'package:rive/rive.dart';
 import '../bloc/header_widget_cubit/header_widget_cubit.dart';
 import '../bloc/header_widget_cubit/header_widget_state.dart';
+import '../bloc/like_ikon/like_ikon_cubit.dart';
 import 'bookmark_icon.dart';
+import 'like_icon.dart';
 
 class HeaderWidget extends StatefulWidget {
+  final List<Recipe> recipes;
   final Recipe recipe;
   final String userId;
   const HeaderWidget({
     super.key,
+    required this.recipes,
     required this.recipe,
     required this.userId,
   });
@@ -37,14 +41,19 @@ class _HeaderWidgetState extends State<HeaderWidget> {
     _like = controller.findInput<bool>('Like') as SMIBool;
   }
 
-  void _changeLike() {
-    if (_like?.value == false) {
-      _like?.value = true;
-    } else {
-      _like?.value = false;
-    }
-  }
+  // void _changeLike() {
+  //   if (_like?.value == false) {
+  //     _like?.value = true;
+  //   } else {
+  //     _like?.value = false;
+  //   }
+  // }
+// Future <void> changeFavorite() async{
 
+//  var d= await  context
+//                     .read<HeaderWidgetCubit>()
+//                     .changeFavorite(widget.recipe.id, widget.userId);
+// }
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -76,26 +85,44 @@ class _HeaderWidgetState extends State<HeaderWidget> {
             //                      }),),)),
 
             // ***Rive animate***
-            Builder(builder: (context) {
-              bool _isLike;
-              (context.watch<HeaderWidgetCubit>().state
-                      is HeaderWidgetStateLike)
-                  ? _like?.value = true
-                  : _like?.value = false;
-              return SizedBox(
-                height: 50,
-                width: 50,
-                child: GestureDetector(
-                  child: RiveAnimation.asset(
-                    'assets/rive/heart.riv',
-                    onInit: _onInit,
-                  ),
-                  onTap: () => context
-                      .read<HeaderWidgetCubit>()
-                      .changeFavorite(widget.recipe.id, widget.userId),
-                ),
-              );
-            }),
+
+            GestureDetector(
+              onTap: () async {
+                await context
+                    .read<HeaderWidgetCubit>()
+                    .changeFavorite(widget.recipe.id, widget.userId);
+
+                context
+                    .read<LikeIkonCubit>()
+                    .loadLikes(widget.recipes, widget.userId);
+              },
+              child: LikeIkon(
+                recipeId: widget.recipe.id,
+                userId: widget.userId,
+              ),
+            ),
+
+            // Builder(builder: (context) {
+            //   bool _isLike;
+            //   (context.watch<HeaderWidgetCubit>().state
+            //           is HeaderWidgetStateLike)
+            //       ? _like?.value = true
+            //       : _like?.value = false;
+            //   return SizedBox(
+            //     height: 50,
+            //     width: 50,
+            //     child: GestureDetector(
+            //       child: RiveAnimation.asset(
+            //         'assets/rive/heart.riv',
+            //         onInit: _onInit,
+            //       ),
+            //       onTap: () => context
+            //           .read<HeaderWidgetCubit>()
+            //           .changeFavorite(widget.recipe.id, widget.userId),
+            //     ),
+            //   );
+            // }),
+
             // IconButton(
             //     icon: const Icon(Icons.favorite),
             //     color: (context.watch<HeaderWidgetCubit>().state

@@ -3,10 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_recipe/feauters/recipes/data/datasources/gallery_source_hive.dart';
 import 'package:flutter_recipe/feauters/recipes/data/repository/recipe_repository_impl.dart';
 import 'package:flutter_recipe/feauters/recipes/domain/entities/gallery_item.dart';
-import 'package:flutter_recipe/feauters/recipes/domain/repository/gallery_repository.dart';
 import 'package:flutter_recipe/feauters/recipes/presentation/bloc/comments_widget_bloc/comments_widget_cubit.dart';
 import 'package:flutter_recipe/feauters/recipes/presentation/bloc/gallery_widget_cubit/gallery_widget_cubit.dart';
 import 'package:flutter_recipe/feauters/recipes/presentation/bloc/header_widget_cubit/header_widget_cubit.dart';
+import 'package:flutter_recipe/feauters/recipes/presentation/bloc/like_ikon/like_ikon_cubit.dart';
 import 'package:flutter_recipe/feauters/recipes/presentation/bloc/list_recipe_cubit/list_recipe_cubit.dart';
 import 'package:flutter_recipe/feauters/recipes/presentation/bloc/steps_widget_cubit/steps_widget_cubit.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -80,6 +80,13 @@ class MyApp extends StatelessWidget {
             create: (_) => GalleryWidgetCubit(GalleryWidgetEmptyState(),
                 galleryRepositoryImpl: GalleryRepositoryImpl(
                     gallerySourceHive: GallerySourceHive()))),
+        BlocProvider<LikeIkonCubit>(
+            create: (_) => LikeIkonCubit(
+                recipeRepositoryImpl: RecipeRepositoryImpl(
+                    dataSourseRemote: DataSourceRemoteImpl(),
+                    dataSourseLocalHive: DataSourceLocalHiveImpl(),
+                    dataSourseFile: DataSourseFile(
+                        pathFile: 'assets/file/recipes_json.json')))),
       ],
       child: MaterialApp(
         title: 'My recipe',

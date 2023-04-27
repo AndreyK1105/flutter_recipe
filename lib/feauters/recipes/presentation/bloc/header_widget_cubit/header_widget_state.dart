@@ -13,3 +13,5 @@ class HeaderWidgetStateUnLike extends HeaderWidgetState {
   int aggregateLikes;
   HeaderWidgetStateUnLike({required this.aggregateLikes});
 }
+
+class HeaderWidgetStateLoading extends HeaderWidgetState {}
